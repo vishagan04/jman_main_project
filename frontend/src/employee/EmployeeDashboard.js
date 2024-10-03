@@ -66,9 +66,30 @@ const EmployeeDashboard = () => {
         setMarksBarChartOptions({
           chart: {
             id: "marks-bar-chart",
+            toolbar: {
+              show: false, // Hide the toolbar
+            },
           },
           xaxis: {
             categories: skills,
+            title: {
+              text: "Skills",
+              style: {
+                fontSize: '14px',
+                fontWeight: 'bold',
+                color: '#333',
+              },
+            },
+          },
+          yaxis: {
+            title: {
+              text: "Marks",
+              style: {
+                fontSize: '14px',
+                fontWeight: 'bold',
+                color: '#333',
+              },
+            },
           },
         });
 
@@ -84,8 +105,14 @@ const EmployeeDashboard = () => {
           chart: {
             id: "marks-pie-chart",
             type: "pie",
+            toolbar: {
+              show: false,
+            },
           },
           labels: skills,
+          legend: {
+            position: 'bottom',
+          },
         });
 
         setMarksPieChartSeries(marks);
@@ -104,12 +131,13 @@ const EmployeeDashboard = () => {
       <div className="row">
         <EmployeeSidebar />
         <div className="container mt-4 col-md-9">
-          <h2 className="mb-3">Employee Dashboard</h2>
+          <h2 className="mb-4">Employee Dashboard</h2>
           <p>Welcome to your dashboard! Track your performance and progress.</p>
-          <div className="row mt-4">
+          
+          <div className="row mb-4">
             {/* Total Courses Card */}
-            <div className="col-lg-6 col-md-12 mb-3">
-              <div className="card shadow-sm" style={{ height: "100%" }}>
+            <div className="col-lg-6 col-md-12 mb-4">
+              <div className="card shadow-sm h-100">
                 <div className="card-body text-center">
                   <h5 className="card-title">
                     <i className="fas fa-book-open"></i> Total Courses
@@ -119,8 +147,8 @@ const EmployeeDashboard = () => {
               </div>
             </div>
             {/* Completed Courses Card */}
-            <div className="col-lg-6 col-md-12 mb-3">
-              <div className="card shadow-sm" style={{ height: "100%" }}>
+            <div className="col-lg-6 col-md-12 mb-4">
+              <div className="card shadow-sm h-100">
                 <div className="card-body text-center">
                   <h5 className="card-title">
                     <i className="fas fa-check-circle"></i> Completed Courses
@@ -130,10 +158,11 @@ const EmployeeDashboard = () => {
               </div>
             </div>
           </div>
-          <div className="row mt-4">
+
+          <div className="row mb-4">
             {/* Bar Chart for Skills and Marks */}
-            <div className="col-lg-6 mb-3">
-              <div className="card shadow-sm">
+            <div className="col-lg-6 mb-4">
+              <div className="card shadow-sm h-100">
                 <div className="card-body">
                   <h5 className="card-title">Skills and Marks (Bar Chart)</h5>
                   <Chart
@@ -146,8 +175,8 @@ const EmployeeDashboard = () => {
               </div>
             </div>
             {/* Pie Chart for Marks Distribution */}
-            <div className="col-lg-6 mb-3">
-              <div className="card shadow-sm">
+            <div className="col-lg-6 mb-4">
+              <div className="card shadow-sm h-100">
                 <div className="card-body">
                   <h5 className="card-title">Marks Distribution (Pie Chart)</h5>
                   <Chart
@@ -160,11 +189,12 @@ const EmployeeDashboard = () => {
               </div>
             </div>
           </div>
-          <div className="row mt-4">
+
+          <div className="row">
             {/* Cards for Skill Counts */}
             {Object.entries(skillCounts).map(([skill, count]) => (
-              <div className="col-lg-4 mb-3" key={skill}>
-                <div className="card shadow-sm">
+              <div className="col-lg-4 mb-4" key={skill}>
+                <div className="card shadow-sm h-100">
                   <div className="card-body text-center">
                     <h5 className="card-title">{skill}</h5>
                     <p className="card-text">Count: {count}</p>

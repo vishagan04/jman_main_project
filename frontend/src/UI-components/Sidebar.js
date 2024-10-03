@@ -33,13 +33,13 @@ const Sidebar = () => {
               Employee List
             </NavLink>
           </li>
-          <li className="nav-item">
+          {/* <li className="nav-item">
             <NavLink 
               to="/admin/add-employee" 
               className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
               Add Employee
             </NavLink>
-          </li>
+          </li> */}
           <li className="nav-item">
             <NavLink 
               to="/admin/skills" 

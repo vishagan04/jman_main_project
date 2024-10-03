@@ -30,6 +30,55 @@ exports.getEmployees = async (req, res) => {
     }
   };
 
+// controllers/admin/employeeController.js
+
+// ...existing code...
+
+// Update an employee
+exports.updateEmployee = async (req, res) => {
+  const { id } = req.params; // Get the employee ID from the request parameters
+  const { name, email, role, department, password } = req.body; // Get updated data
+
+  try {
+    // Find the employee by ID and update their details
+    const updatedEmployee = await Employee.findByIdAndUpdate(
+      id,
+      { name, email, role, department, password: password ? await bcrypt.hash(password, 10) : undefined },
+      { new: true, runValidators: true } // return the updated document and run validators
+    );
+
+    if (!updatedEmployee) {
+      return res.status(404).json({ message: "Employee not found" });
+    }
+
+    res.status(200).json(updatedEmployee); // Return the updated employee
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+// Delete an employee
+exports.deleteEmployee = async (req, res) => {
+  const { id } = req.params; // Get the employee ID from the request parameters
+
+  try {
+    const deletedEmployee = await Employee.findByIdAndDelete(id); // Delete the employee by ID
+
+    if (!deletedEmployee) {
+      return res.status(404).json({ message: "Employee not found" });
+    }
+
+    res.status(204).send(); // No content to send back
+  } catch (error) {
+    res.status(500).json({ message: "Server error: " + error.message });
+  }
+};
+
+// ...existing code...
+
+
+
+
 // Login employee
 exports.login = async (req, res) => {
   const { email, password } = req.body;

@@ -1,5 +1,3 @@
-// CoursesManagement.js
-
 import React, { useEffect, useState } from "react";
 import Navbar from "../UI-components/Navbar";
 import Sidebar from "../UI-components/Sidebar";
@@ -12,7 +10,10 @@ const CoursesManagement = () => {
     id: "",
     name: "",
     description: "",
+    competencyLevel: "beginner", // Default value
   });
+  const [isEditing, setIsEditing] = useState(false);
+  const [currentCourseId, setCurrentCourseId] = useState(null);
 
   useEffect(() => {
     // Fetch courses from the API
@@ -40,33 +41,88 @@ const CoursesManagement = () => {
       id: formData.id,
       name: formData.name,
       description: formData.description,
+      competencyLevel: formData.competencyLevel, // Include competency level
     };
 
+    if (isEditing) {
+      // Update course if we are editing
+      try {
+        const response = await fetch(`http://localhost:5000/api/courses/${currentCourseId}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newCourse),
+        });
+
+        if (response.ok) {
+          const updatedCourse = await response.json();
+          setCourses(
+            courses.map((course) =>
+              course.id === currentCourseId ? updatedCourse : course
+            )
+          );
+          setIsEditing(false);
+          setFormData({ id: "", name: "", description: "", competencyLevel: "beginner" });
+          setShowModal(false);
+        } else {
+          console.error("Error updating course:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Error updating course:", error);
+      }
+    } else {
+      // Add new course if we are not editing
+      try {
+        const response = await fetch("http://localhost:5000/api/courses", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newCourse),
+        });
+
+        if (response.ok) {
+          const addedCourse = await response.json();
+          setCourses([...courses, addedCourse]);
+          setFormData({ id: "", name: "", description: "", competencyLevel: "beginner" });
+          setShowModal(false);
+        } else {
+          console.error("Error adding course:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Error adding course:", error);
+      }
+    }
+  };
+
+  const handleEdit = (course) => {
+    setFormData({ id: course.id, name: course.name, description: course.description, competencyLevel: course.competencyLevel });
+    setCurrentCourseId(course.id);
+    setIsEditing(true);
+    setShowModal(true);
+  };
+
+  const handleDelete = async (id) => {
     try {
-      const response = await fetch("http://localhost:5000/api/courses", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newCourse),
+      const response = await fetch(`http://localhost:5000/api/courses/${id}`, {
+        method: "DELETE",
       });
 
       if (response.ok) {
-        const addedCourse = await response.json();
-        setCourses([...courses, addedCourse]); // Update courses state with the new course
-        setFormData({ id: "", name: "", description: "" });
-        setShowModal(false);
+        setCourses(courses.filter((course) => course.id !== id));
       } else {
-        console.error("Error adding course:", response.statusText);
+        console.error("Error deleting course:", response.statusText);
       }
     } catch (error) {
-      console.error("Error adding course:", error);
+      console.error("Error deleting course:", error);
     }
   };
 
   const handleCloseModal = () => {
     setShowModal(false);
-    setFormData({ id: "", name: "", description: "" });
+    setIsEditing(false);
+    setFormData({ id: "", name: "", description: "", competencyLevel: "beginner" });
   };
 
   return (
@@ -78,7 +134,11 @@ const CoursesManagement = () => {
           <h1 className="mb-4">Courses Management</h1>
           <button
             className="btn btn-primary mb-3"
-            onClick={() => setShowModal(true)}
+            onClick={() => {
+              setShowModal(true);
+              setIsEditing(false);
+              setFormData({ id: "", name: "", description: "", competencyLevel: "beginner" }); // Reset form for adding new course
+            }}
           >
             Add Course
           </button>
@@ -88,6 +148,8 @@ const CoursesManagement = () => {
                 <th>Course ID</th>
                 <th>Course Name</th>
                 <th>Description</th>
+                <th>Competency Level</th> {/* Add Competency Level column */}
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -96,15 +158,30 @@ const CoursesManagement = () => {
                   <td>{course.id}</td>
                   <td>{course.name}</td>
                   <td>{course.description}</td>
+                  <td>{course.competencyLevel}</td> {/* Display Competency Level */}
+                  <td>
+                    <button
+                      className="btn btn-warning me-2"
+                      onClick={() => handleEdit(course)}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="btn btn-danger"
+                      onClick={() => handleDelete(course.id)}
+                    >
+                      Delete
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
 
-          {/* Modal for Adding Course */}
+          {/* Modal for Adding/Editing Course */}
           <Modal show={showModal} onHide={handleCloseModal}>
             <Modal.Header closeButton>
-              <Modal.Title>Add New Course</Modal.Title>
+              <Modal.Title>{isEditing ? "Edit Course" : "Add New Course"}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <form onSubmit={handleSubmit}>
@@ -140,8 +217,22 @@ const CoursesManagement = () => {
                     required
                   />
                 </div>
-                <Button type="submit" variant="primary">
-                  Add Course
+                <div className="mb-3">
+                  <label className="form-label">Competency Level</label>
+                  <select
+                    className="form-select"
+                    name="competencyLevel"
+                    value={formData.competencyLevel}
+                    onChange={handleChange}
+                    required
+                  >
+                    <option value="beginner">Beginner</option>
+                    <option value="intermediate">Intermediate</option>
+                    <option value="advanced">Advanced</option>
+                  </select>
+                </div>
+                <Button variant="primary" type="submit">
+                  {isEditing ? "Update Course" : "Add Course"}
                 </Button>
               </form>
             </Modal.Body>

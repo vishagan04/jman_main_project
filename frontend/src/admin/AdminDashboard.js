@@ -7,8 +7,10 @@ const AdminDashboard = () => {
   const [totalEmployees, setTotalEmployees] = useState(0);
   const [totalSkills, setTotalSkills] = useState(0);
   const [totalCourses, setTotalCourses] = useState(0);
+  const [skillsDistribution, setSkillsDistribution] = useState([60, 30, 10]); // Example distribution
+  const [completionRate, setCompletionRate] = useState(75); // Example completion rate
+  const [courseProgress, setCourseProgress] = useState([10, 30, 50, 70, 90, 110]); // Example data
 
-  // Fetch data from the API when the component mounts
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
@@ -19,10 +21,15 @@ const AdminDashboard = () => {
         const skillResponse = await fetch("http://localhost:5000/api/skills");
         const skillsData = await skillResponse.json();
         setTotalSkills(skillsData.length);
+        // Here, you might want to process `skillsData` to calculate distribution if it's more complex
 
         const courseResponse = await fetch("http://localhost:5000/api/courses");
         const coursesData = await courseResponse.json();
         setTotalCourses(coursesData.length);
+        // Similarly, process `coursesData` for `courseProgress` if needed
+
+        // Fetch skill distribution and completion rate data here, if available
+
       } catch (error) {
         console.error("Error fetching dashboard data:", error);
       }
@@ -33,31 +40,32 @@ const AdminDashboard = () => {
 
   // Pie chart for skills distribution
   const skillsPieChartOptions = {
-    labels: ["Technical", "Soft Skills", "Certifications"],
-    series: [60, 30, 10], // Example data
+    labels: ["Technical", " Soft Skills", "Certifications"],
+    series: skillsDistribution, // Updated to use fetched data
     chart: {
       type: "pie",
     },
     legend: {
-      position: 'bottom'
+      position: "bottom",
     },
   };
 
   // Radial bar chart for employee skill completion
   const radialBarOptions = {
-    series: [75], // Example completion data
+    series: [completionRate], // Updated to use fetched data
     chart: {
-      type: 'radialBar'
+      type: "radialBar",
     },
     plotOptions: {
       radialBar: {
         dataLabels: {
           value: {
             show: true,
-            fontSize: '20px'
-          }
-        }
-      }
+            fontSize: "20px",
+            formatter: (val) => `${val}%`, // Show percentage
+          },
+        },
+      },
     },
     labels: ["Skill Completion"],
   };
@@ -66,11 +74,11 @@ const AdminDashboard = () => {
   const areaChartOptions = {
     series: [{
       name: "Employees",
-      data: [10, 30, 50, 70, 90, 110] // Example data
+      data: courseProgress, // Updated to use fetched data
     }],
     chart: {
       type: "area",
-      height: 350
+      height: 350,
     },
     xaxis: {
       categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"], // Example months
@@ -101,10 +109,34 @@ const AdminDashboard = () => {
                       <h5 className="card-title">
                         <i className="fas fa-users"></i> Total Employees
                       </h5>
-                      <p className="card-text">{totalEmployees}</p>
+                      <p className="card-text display-4">{totalEmployees}</p>
                     </div>
                   </div>
                 </div>
+                {/* Total Skills Card */}
+                <div className="col-lg-4">
+                  <div className="card shadow">
+                    <div className="card-body">
+                      <h5 className="card-title">
+                        <i className="fas fa-lightbulb"></i> Total Skills
+                      </h5>
+                      <p className="card-text display-4">{totalSkills}</p>
+                    </div>
+                  </div>
+                </div>
+                {/* Total Courses Card */}
+                <div className="col-lg-4">
+                  <div className="card shadow">
+                    <div className="card-body">
+                      <h5 className="card-title">
+                        <i className="fas fa-book"></i> Total Courses
+                      </h5>
+                      <p className="card-text display-4">{totalCourses}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="row mt-4">
                 {/* Skills Pie Chart */}
                 <div className="col-lg-4">
                   <div className="card shadow">
@@ -123,10 +155,8 @@ const AdminDashboard = () => {
                     </div>
                   </div>
                 </div>
-              </div>
-              <div className="row mt-4">
                 {/* Area Chart for Employee Progress */}
-                <div className="col-lg-12">
+                <div className="col-lg-4">
                   <div className="card shadow">
                     <div className="card-body">
                       <h5 className="card-title">Employee Course Progress Over Time</h5>
