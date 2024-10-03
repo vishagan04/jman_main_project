@@ -1,19 +1,35 @@
+
 import React, { useEffect, useState } from "react";
 import EmployeeNavbar from "./components/EmployeeNavbar";
 import EmployeeSidebar from "./components/EmployeeSidebar";
 import { Button, Modal, Table } from "react-bootstrap";
 import SkillAssessmentForm from "./components/SkillAssessmentForm";
 
-const SkillAssessment = ({ employeeId }) => { // Accept employeeId as a prop
+
+
+
+const SkillAssessment = ({  }) => {
   const [assessments, setAssessments] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [currentAssessment, setCurrentAssessment] = useState(null);
-  const [showAddModal, setShowAddModal] = useState(false); // Modal for adding new assessment
+  const [showAddModal, setShowAddModal] = useState(false);
+  let employeeId = false
 
   useEffect(() => {
     const fetchAssessments = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/assessments");
+        const token = localStorage.getItem('token');
+        
+        const response = await fetch(`http://localhost:5000/api/employeeSkillAssessment/${employeeId}`, {
+          headers: {
+            "Authorization": `Bearer ${token}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch assessments');
+        }
+
         const data = await response.json();
         setAssessments(data);
       } catch (error) {
@@ -21,8 +37,11 @@ const SkillAssessment = ({ employeeId }) => { // Accept employeeId as a prop
       }
     };
 
-    fetchAssessments();
-  }, []);
+    const employeeId = JSON.parse(localStorage.getItem('employee')).id // Fetch assessments only when employeeId is available
+    if (employeeId) {
+      fetchAssessments();
+    }
+  }, [employeeId]);
 
   const handleTakeAssessment = (assessment) => {
     setCurrentAssessment(assessment);
@@ -34,20 +53,44 @@ const SkillAssessment = ({ employeeId }) => { // Accept employeeId as a prop
     setCurrentAssessment(null);
   };
 
-  const handleAddAssessmentSubmit = (newAssessment) => {
-    setAssessments([...assessments, newAssessment]); // Update the table immediately
-    setShowAddModal(false);
+  const handleAddAssessmentSubmit = async (newAssessment) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch("http://localhost:5000/api/assessments", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
+        body: JSON.stringify(newAssessment),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to submit assessment");
+      }
+
+      const savedAssessment = await response.json();
+      setAssessments([...assessments, savedAssessment]); // Add the new assessment to the state
+      setShowAddModal(false);
+    } catch (error) {
+      console.error("Error adding assessment:", error);
+    }
   };
 
   return (
     <div>
+      {/* Navbar */}
       <EmployeeNavbar />
+
       <div className="row">
+        {/* Sidebar */}
         <EmployeeSidebar />
+
+        {/* Main Content */}
         <div className="container mt-4 col-md-9">
           <h1 className="mb-4">Skill Assessment</h1>
 
-          {/* Add New Assessment Button */}
+          {/* Add Assessment Button */}
           <Button
             variant="success"
             className="mb-4"
@@ -56,6 +99,7 @@ const SkillAssessment = ({ employeeId }) => { // Accept employeeId as a prop
             Add New Assessment
           </Button>
 
+          {/* Assessments Table */}
           <Table striped bordered hover>
             <thead>
               <tr>
@@ -68,9 +112,9 @@ const SkillAssessment = ({ employeeId }) => { // Accept employeeId as a prop
             <tbody>
               {assessments.map((assessment) => (
                 <tr key={assessment.id}>
-                  <td>{assessment.course}</td>
-                  <td>{assessment.skill}</td>
-                  <td>{assessment.score}</td>
+                  <td>{assessment.certification}</td> {/* Changed course to certification */}
+                  <td>{assessment.skills}</td> {/* Changed skill to skills */}
+                  <td>{assessment.marks}</td> {/* Changed score to marks */}
                   <td>
                     <Button
                       variant="primary"
@@ -93,7 +137,7 @@ const SkillAssessment = ({ employeeId }) => { // Accept employeeId as a prop
               <p>{currentAssessment?.description}</p>
               <SkillAssessmentForm
                 assessmentId={currentAssessment?.id}
-                employeeId={employeeId} // Pass employeeId to the form
+                employeeId={employeeId}
                 onSubmit={handleAddAssessmentSubmit}
               />
             </Modal.Body>
@@ -111,8 +155,8 @@ const SkillAssessment = ({ employeeId }) => { // Accept employeeId as a prop
             </Modal.Header>
             <Modal.Body>
               <SkillAssessmentForm
-                assessmentId={null} // Assuming new assessments will have a null or new id
-                employeeId={employeeId} // Pass employeeId to the form
+                assessmentId={null}
+                employeeId={employeeId}
                 onSubmit={handleAddAssessmentSubmit}
               />
             </Modal.Body>

@@ -5,14 +5,11 @@ import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  localStorage.setItem("Email", "vishagan@gmail.com")
-  localStorage.setItem("password", "1234567")
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   const notify = (message) => toast(message);
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,24 +28,26 @@ const Login = () => {
 
         if (response.ok) {
           const data = await response.json();
-          // Assuming the backend sends back an employee object or a token
-          console.log(data.role)
+          
+          // Assuming the backend sends back a token and role
+          const { token, role } = data; // Adjust according to your response structure
+
+          // Store JWT in local storage
+          localStorage.setItem("token", token);
           localStorage.setItem("employee", JSON.stringify(data));
-          Cookies.set("role",data.role)
-          if(data.role==="admin")
-          {
-          toast.success("Login Successful");
-          setTimeout(() => {
-            navigate("/admin/dashboard"); 
-          }, 2000);
-        }
-        else if(data.role)
-        {
-          toast.success("Login Successful");
-          setTimeout(() => {
-            navigate("/employee/dashboard"); 
-          }, 2000); 
-        }
+          Cookies.set("role", role);
+
+          if (role === "admin") {
+            toast.success("Login Successful");
+            setTimeout(() => {
+              navigate("/admin/dashboard");
+            }, 2000);
+          } else {
+            toast.success("Login Successful");
+            setTimeout(() => {
+              navigate("/employee/dashboard");
+            }, 2000);
+          }
         } else {
           toast.error("Invalid email or password.");
         }
@@ -58,7 +57,6 @@ const Login = () => {
       }
     }
   };
-
 
   return (
     <div>

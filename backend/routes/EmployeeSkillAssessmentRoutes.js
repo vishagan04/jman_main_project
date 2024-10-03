@@ -10,4 +10,7 @@ router.post('/', authMiddleware, submitEmployeeSkillAssessment);
 // Route to get skill assessments for a specific employee
 router.get('/:employeeId', getSkillAssessmentsByEmployee);
 
+
+
+
 module.exports = router;

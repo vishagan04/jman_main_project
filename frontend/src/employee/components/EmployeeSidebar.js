@@ -1,4 +1,5 @@
 // EmployeeSidebar.js
+            
 import React from "react";
 import { NavLink,useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
@@ -11,7 +12,8 @@ const EmployeeSidebar = () => {
     { 
       e.preventDefault()
       Cookies.remove("role");
-      navigate("/login")
+      localStorage.clear();
+      navigate("/login");
     }
     
 

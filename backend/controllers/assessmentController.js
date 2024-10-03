@@ -2,6 +2,7 @@ const Assessment = require('../models/Assessment');
 
 // Get all assessments
 exports.getAssessments = async (req, res) => {
+
   try {
     const assessments = await Assessment.find();
     res.status(200).json(assessments);

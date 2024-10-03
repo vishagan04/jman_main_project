@@ -22,7 +22,7 @@ app.use("/api/skills", skillRoutes);
 app.use("/api/courses", courseRoutes);
 app.use("/api/assessments", assessmentRoutes); 
 app.use("/api/skill-assessments", skillAssessmentRoutes);
-app.use("/api/employee-skill-assessments", employeeSkillAssessmentRoutes); 
+app.use("/api/employeeSkillAssessment", employeeSkillAssessmentRoutes); 
 
 // Error handling middleware
 app.use((err, req, res, next) => {

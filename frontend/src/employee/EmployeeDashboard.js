@@ -6,7 +6,13 @@ import Chart from "react-apexcharts";
 const EmployeeDashboard = () => {
   const [totalCourses, setTotalCourses] = useState(0);
   const [completedCourses, setCompletedCourses] = useState(0);
-  const [skillProgress, setSkillProgress] = useState(0);
+  const [assessments, setAssessments] = useState([]);
+  const [marksData, setMarksData] = useState([]);
+  const [marksBarChartOptions, setMarksBarChartOptions] = useState({});
+  const [marksBarChartSeries, setMarksBarChartSeries] = useState([]);
+  const [marksPieChartOptions, setMarksPieChartOptions] = useState({});
+  const [marksPieChartSeries, setMarksPieChartSeries] = useState([]);
+  const [skillCounts, setSkillCounts] = useState({});
 
   useEffect(() => {
     const fetchDashboardData = async () => {
@@ -19,45 +25,78 @@ const EmployeeDashboard = () => {
         const completedData = await completedResponse.json();
         setCompletedCourses(completedData.length);
 
-        const progressResponse = await fetch("http://localhost:5000/api/skillProgress");
-        const progressData = await progressResponse.json();
-        setSkillProgress(progressData.progress); // Assuming progress is a number (e.g., 75)
+        const marksResponse = await fetch("http://localhost:5000/api/marks");
+        const marksData = await marksResponse.json();
+        setMarksData(marksData);
       } catch (error) {
         console.error("Error fetching dashboard data:", error);
       }
     };
 
-    fetchDashboardData();
-  }, []);
+    const fetchAssessments = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const employeeId = JSON.parse(localStorage.getItem("employee")).id;
 
-  const coursesPieChartOptions = {
-    labels: ["Completed Courses", "Remaining Courses"],
-    series: [completedCourses, totalCourses - completedCourses],
-    chart: {
-      type: "pie",
-    },
-    legend: {
-      position: 'bottom'
-    },
-  };
+        const response = await fetch(`http://localhost:5000/api/employeeSkillAssessment/${employeeId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-  const radialBarOptions = {
-    series: [skillProgress],
-    chart: {
-      type: 'radialBar'
-    },
-    plotOptions: {
-      radialBar: {
-        dataLabels: {
-          value: {
-            show: true,
-            fontSize: '20px'
-          }
+        if (!response.ok) {
+          throw new Error("Failed to fetch assessments");
         }
+
+        const data = await response.json();
+        setAssessments(data);
+
+        // Count the occurrences of each skill
+        const counts = data.reduce((acc, curr) => {
+          const skill = curr.skills;
+          acc[skill] = (acc[skill] || 0) + 1; // Increment count for each skill
+          return acc;
+        }, {});
+        setSkillCounts(counts);
+
+        const skills = data.map((item) => item.skills);
+        const marks = data.map((item) => item.marks);
+
+        // Set up bar chart data
+        setMarksBarChartOptions({
+          chart: {
+            id: "marks-bar-chart",
+          },
+          xaxis: {
+            categories: skills,
+          },
+        });
+
+        setMarksBarChartSeries([
+          {
+            name: "Marks",
+            data: marks,
+          },
+        ]);
+
+        // Set up pie chart data
+        setMarksPieChartOptions({
+          chart: {
+            id: "marks-pie-chart",
+            type: "pie",
+          },
+          labels: skills,
+        });
+
+        setMarksPieChartSeries(marks);
+      } catch (error) {
+        console.error("Error fetching assessments:", error);
       }
-    },
-    labels: ["Skill Completion"],
-  };
+    };
+
+    fetchDashboardData();
+    fetchAssessments();
+  }, []);
 
   return (
     <div>
@@ -65,40 +104,74 @@ const EmployeeDashboard = () => {
       <div className="row">
         <EmployeeSidebar />
         <div className="container mt-4 col-md-9">
-          <h2>Employee Dashboard</h2>
-          <p>Welcome to your dashboard! Here you can track your performance and progress.</p>
+          <h2 className="mb-3">Employee Dashboard</h2>
+          <p>Welcome to your dashboard! Track your performance and progress.</p>
           <div className="row mt-4">
             {/* Total Courses Card */}
-            <div className="col-lg-6">
-              <div className="card shadow">
-                <div className="card-body">
+            <div className="col-lg-6 col-md-12 mb-3">
+              <div className="card shadow-sm" style={{ height: "100%" }}>
+                <div className="card-body text-center">
                   <h5 className="card-title">
                     <i className="fas fa-book-open"></i> Total Courses
                   </h5>
-                  <p className="card-text">{totalCourses}</p>
+                  <p className="card-text display-4">{totalCourses}</p>
                 </div>
               </div>
             </div>
-            {/* Pie Chart for Course Completion */}
-            <div className="col-lg-6">
-              <div className="card shadow">
-                <div className="card-body">
-                  <h5 className="card-title">Course Completion Status</h5>
-                  <Chart options={coursesPieChartOptions} series={coursesPieChartOptions.series} type="pie" width="100%" />
+            {/* Completed Courses Card */}
+            <div className="col-lg-6 col-md-12 mb-3">
+              <div className="card shadow-sm" style={{ height: "100%" }}>
+                <div className="card-body text-center">
+                  <h5 className="card-title">
+                    <i className="fas fa-check-circle"></i> Completed Courses
+                  </h5>
+                  <p className="card-text display-4">{completedCourses}</p>
                 </div>
               </div>
             </div>
           </div>
           <div className="row mt-4">
-            {/* Radial Bar Chart for Skill Completion */}
-            <div className="col-lg-12">
-              <div className="card shadow">
+            {/* Bar Chart for Skills and Marks */}
+            <div className="col-lg-6 mb-3">
+              <div className="card shadow-sm">
                 <div className="card-body">
-                  <h5 className="card-title">Skill Completion Rate</h5>
-                  <Chart options={radialBarOptions} series={radialBarOptions.series} type="radialBar" width="100%" />
+                  <h5 className="card-title">Skills and Marks (Bar Chart)</h5>
+                  <Chart
+                    options={marksBarChartOptions}
+                    series={marksBarChartSeries}
+                    type="bar"
+                    width="100%"
+                  />
                 </div>
               </div>
             </div>
+            {/* Pie Chart for Marks Distribution */}
+            <div className="col-lg-6 mb-3">
+              <div className="card shadow-sm">
+                <div className="card-body">
+                  <h5 className="card-title">Marks Distribution (Pie Chart)</h5>
+                  <Chart
+                    options={marksPieChartOptions}
+                    series={marksPieChartSeries}
+                    type="pie"
+                    width="100%"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="row mt-4">
+            {/* Cards for Skill Counts */}
+            {Object.entries(skillCounts).map(([skill, count]) => (
+              <div className="col-lg-4 mb-3" key={skill}>
+                <div className="card shadow-sm">
+                  <div className="card-body text-center">
+                    <h5 className="card-title">{skill}</h5>
+                    <p className="card-text">Count: {count}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>

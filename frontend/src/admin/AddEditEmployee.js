@@ -5,6 +5,7 @@ import Sidebar from "../UI-components/Sidebar";
 const AddEditEmployee = ({ onEmployeeAdded }) => {
   const [formData, setFormData] = useState({
     name: "",
+    email: "", // New email field
     role: "",
     department: "",
     password: "", // Password field for employee
@@ -41,6 +42,7 @@ const AddEditEmployee = ({ onEmployeeAdded }) => {
       // Reset form data after submission
       setFormData({
         name: "",
+        email: "", // Reset email field
         role: "",
         department: "",
         password: "",
@@ -65,6 +67,17 @@ const AddEditEmployee = ({ onEmployeeAdded }) => {
                 className="form-control"
                 name="name"
                 value={formData.name}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="mb-3">
+              <label className="form-label">Email</label>
+              <input
+                type="email" // Set type to email for validation
+                className="form-control"
+                name="email"
+                value={formData.email}
                 onChange={handleChange}
                 required
               />

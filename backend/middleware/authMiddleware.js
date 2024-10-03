@@ -32,6 +32,7 @@ const authMiddleware = (req, res, next) => {
       // Attach employee data to the request object
       req.employee = employee;
 
+
       // Call next middleware or route handler
       next();
     } catch (error) {
@@ -47,7 +48,7 @@ const authorize = (roles = []) => {
   if (typeof roles === 'string') {
     roles = [roles];
   }
-
+  console.log("Tole", role)
   return (req, res, next) => {
     // If roles array is empty, grant access
     if (roles.length && !roles.includes(req.employee.role)) {
