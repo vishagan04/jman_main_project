@@ -91,7 +91,7 @@ const EmployeeList = () => {
             <table className="table table-striped">
               <thead>
                 <tr>
-                  <th>ID</th>
+                  <th>Email</th> {/* Change from ID to Email */}
                   <th>Name</th>
                   <th>Role</th>
                   <th>Department</th>
@@ -101,7 +101,7 @@ const EmployeeList = () => {
               <tbody>
                 {employees.map((employee) => (
                   <tr key={employee._id}>
-                    <td>{employee._id}</td>
+                    <td>{employee.email}</td> {/* Display email instead of ID */}
                     <td>{employee.name}</td>
                     <td>{employee.role}</td>
                     <td>{employee.department}</td>

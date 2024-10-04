@@ -20,7 +20,7 @@ const EmployeeDashboard = () => {
       try {
         const courseResponse = await fetch("http://localhost:5000/api/courses");
         const coursesData = await courseResponse.json();
-        setTotalCourses(coursesData.length);
+        setTotalCourses(coursesData.length || 0); // Safely accessing length
 
         const coursesMapping = {};
         coursesData.forEach(course => {
@@ -52,11 +52,13 @@ const EmployeeDashboard = () => {
         }
 
         const data = await response.json();
-        setAssessments(data);
+        setAssessments(data || []); // Safely handling the data
 
-        const counts = data.reduce((acc, curr) => {
+        const counts = (data || []).reduce((acc, curr) => {
           const skill = curr.skills;
-          acc[skill] = (acc[skill] || 0) + 1;
+          if (skill) {
+            acc[skill] = (acc[skill] || 0) + 1;
+          }
           return acc;
         }, {});
         setSkillCounts(counts);
@@ -73,8 +75,8 @@ const EmployeeDashboard = () => {
           skillsMapping[skill._id] = skill.name;
         });
 
-        const skills = data.map((item) => skillsMapping[item.skills]);
-        const marks = data.map((item) => item.marks);
+        const skills = data.map((item) => skillsMapping[item.skills] || "Unknown"); // Handle undefined skills
+        const marks = data.map((item) => item.marks || 0); // Handle undefined marks
 
         setMarksBarChartOptions({
           chart: {
@@ -168,34 +170,48 @@ const EmployeeDashboard = () => {
                 </div>
               </div>
             </div>
+
+            {/* Total Assessments Taken Card */}
+            <div className="col-lg-4 col-md-6 mb-4">
+              <div className="card shadow-sm h-100 border-success">
+                <div className="card-body text-center">
+                  <h5 className="card-title text-success">Total Assessments Taken</h5>
+                  <p className="card-text display-4">{assessments.length}</p>
+                </div>
+              </div>
+            </div>
           </div>
 
           <div className="row mb-4">
             {/* Bar Chart for Skills and Marks */}
             <div className="col-lg-6 mb-4">
               <div className="card shadow-sm h-100">
-                <div className="card-body">
+                <div className="card-body" style={{ padding: "1rem" }}>
                   <h5 className="card-title">Skills and Marks (Bar Chart)</h5>
-                  <Chart
-                    options={marksBarChartOptions}
-                    series={marksBarChartSeries}
-                    type="bar"
-                    width="100%"
-                  />
+                  <div style={{ width: "80%", margin: "0 auto" }}>
+                    <Chart
+                      options={marksBarChartOptions}
+                      series={marksBarChartSeries}
+                      type="bar"
+                      width="100%"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
             {/* Pie Chart for Marks Distribution */}
             <div className="col-lg-6 mb-4">
               <div className="card shadow-sm h-100">
-                <div className="card-body">
+                <div className="card-body" style={{ padding: "1rem" }}>
                   <h5 className="card-title">Marks Distribution (Pie Chart)</h5>
-                  <Chart
-                    options={marksPieChartOptions}
-                    series={marksPieChartSeries}
-                    type="pie"
-                    width="100%"
-                  />
+                  <div style={{ width: "80%", margin: "0 auto" }}>
+                    <Chart
+                      options={marksPieChartOptions}
+                      series={marksPieChartSeries}
+                      type="pie"
+                      width="100%"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
