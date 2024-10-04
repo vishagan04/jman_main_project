@@ -9,29 +9,26 @@ const SkillAssessmentForm = ({ employeeId, onSubmit }) => {
   const [skillOptions, setSkillOptions] = useState([]);
 
   useEffect(() => {
-    // Fetch certifications from the API
     const fetchCertifications = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/courses'); // Update to your certifications API endpoint
+        const response = await fetch('http://localhost:5000/api/courses');
         const data = await response.json();
-        setCertificationOptions(data); // Assuming data is an array of certifications
+        setCertificationOptions(data);
       } catch (error) {
         console.error("Error fetching certifications:", error);
       }
     };
 
-    // Fetch skills from the API
     const fetchSkills = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/skills'); // Update to your skills API endpoint
+        const response = await fetch('http://localhost:5000/api/skills');
         const data = await response.json();
-        setSkillOptions(data); // Assuming data is an array of skills
+        setSkillOptions(data);
       } catch (error) {
         console.error("Error fetching skills:", error);
       }
     };
 
-    // Call both fetch functions
     fetchCertifications();
     fetchSkills();
   }, []);
@@ -45,7 +42,6 @@ const SkillAssessmentForm = ({ employeeId, onSubmit }) => {
       return;
     }
 
-    // Prepare data to submit
     const assessmentData = {
       employeeId,
       certification,
@@ -58,7 +54,7 @@ const SkillAssessmentForm = ({ employeeId, onSubmit }) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`, // Include the token for authentication
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
         },
         body: JSON.stringify(assessmentData),
       });
@@ -91,7 +87,7 @@ const SkillAssessmentForm = ({ employeeId, onSubmit }) => {
         >
           <option value="">Select Certification</option>
           {certificationOptions.map((cert) => (
-            <option key={cert._id} value={cert._id}>{cert.name}</option> // Use _id if that's the ID field in your model
+            <option key={cert._id} value={cert._id}>{cert.name}</option>
           ))}
         </Form.Select>
       </Form.Group>
@@ -105,16 +101,15 @@ const SkillAssessmentForm = ({ employeeId, onSubmit }) => {
         >
           <option value="">Select Skill</option>
           {skillOptions.map((skill) => (
-            <option key={skill._id} value={skill._id}>{skill.name}</option> // Use _id if that's the ID field in your model
+            <option key={skill._id} value={skill._id}>{skill.name}</option>
           ))}
         </Form.Select>
       </Form.Group>
 
       <Form.Group controlId="marks">
-        <Form.Label>Marks (0-100)</Form.Label>
+        <Form.Label>Score (0-100)</Form.Label>
         <Form.Control
           type="number"
-          placeholder="Enter marks (0-100)"
           value={marks}
           onChange={(e) => setMarks(e.target.value)}
           required
@@ -122,7 +117,7 @@ const SkillAssessmentForm = ({ employeeId, onSubmit }) => {
       </Form.Group>
 
       <Button variant="primary" type="submit">
-        Submit Assessment
+        Submit
       </Button>
     </Form>
   );

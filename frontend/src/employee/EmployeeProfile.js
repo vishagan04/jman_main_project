@@ -3,20 +3,59 @@ import EmployeeNavbar from "./components/EmployeeNavbar";
 import EmployeeSidebar from "./components/EmployeeSidebar";
 
 const EmployeeProfile = () => {
-  const [employeeData, setEmployeeData] = useState(null); // State to hold employee data
+  const [profileData, setProfileData] = useState(null);
+  const [skills, setSkills] = useState([]);
+  const [certifications, setCertifications] = useState([]);
 
   useEffect(() => {
-    const fetchEmployeeData = async () => {
+    const fetchProfileData = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/employees/1"); // Replace with appropriate API endpoint
-        const data = await response.json();
-        setEmployeeData(data);
+        const token = localStorage.getItem("token");
+        const employeeId = JSON.parse(localStorage.getItem("employee")).id;
+
+        // Fetch employee profile details
+        const profileResponse = await fetch(`http://localhost:5000/api/employeeProfile/${employeeId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!profileResponse.ok) {
+          throw new Error("Failed to fetch profile data");
+        }
+
+        const profileData = await profileResponse.json();
+        setProfileData(profileData);
+
+        // Fetch employee skills
+        const skillsResponse = await fetch(`http://localhost:5000/api/employeeSkills/${employeeId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!skillsResponse.ok) {
+          throw new Error("Failed to fetch skills");
+        }
+
+        const skillsData = await skillsResponse.json();
+        setSkills(skillsData);
+
+        // Fetch certifications
+        const certResponse = await fetch(`http://localhost:5000/api/certifications`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const certData = await certResponse.json();
+        setCertifications(certData);
       } catch (error) {
-        console.error("Error fetching employee data:", error);
+        console.error("Error fetching profile data:", error);
       }
     };
 
-    fetchEmployeeData();
+    fetchProfileData();
   }, []);
 
   return (
@@ -25,62 +64,54 @@ const EmployeeProfile = () => {
       <div className="row">
         <EmployeeSidebar />
         <div className="container mt-4 col-md-9">
-          <h1 className="mb-4">Employee Profile</h1>
-          {employeeData ? (
-            <div className="card shadow-sm p-4">
-              <div className="d-flex align-items-center">
-                <img 
-                  src={employeeData.profilePicture || "default-profile-pic.png"} // Placeholder image
-                  alt={`${employeeData.name}'s Profile`}
-                  className="rounded-circle"
-                  style={{ width: '100px', height: '100px', marginRight: '20px' }} 
-                />
-                <div>
-                  <h3>{employeeData.name}</h3>
-                  <p><strong>Email:</strong> {employeeData.email}</p>
-                  <p><strong>Position:</strong> {employeeData.position}</p>
+          <h2 className="mb-4">Employee Profile</h2>
+
+          {profileData ? (
+            <div>
+              <div className="card mb-4">
+                <div className="card-body">
+                  <h5 className="card-title">Personal Information</h5>
+                  <p><strong>Name:</strong> {profileData.name}</p>
+                  <p><strong>Email:</strong> {profileData.email}</p>
+                  <p><strong>Department:</strong> {profileData.department}</p>
+                  <p><strong>Role:</strong> {profileData.role}</p>
                 </div>
               </div>
-              <hr />
-              <h4>Skills</h4>
-              <ul>
-                {employeeData.skills.map((skill) => (
-                  <li key={skill.id}>
-                    <strong>{skill.name}</strong>: {skill.description}
-                  </li>
-                ))}
-              </ul>
-              <h4>Certifications</h4>
-              <ul>
-                {employeeData.certifications.map((cert) => (
-                  <li key={cert.id}>{cert.name}</li>
-                ))}
-              </ul>
-              {employeeData.experience && (
-                <>
-                  <h4>Experience</h4>
-                  <ul>
-                    {employeeData.experience.map((exp) => (
-                      <li key={exp.id}>
-                        <strong>{exp.jobTitle}</strong> at {exp.company} ({exp.startDate} - {exp.endDate})
-                      </li>
-                    ))}
-                  </ul>
-                </>
-              )}
-              {employeeData.achievements && (
-                <>
-                  <h4>Achievements</h4>
-                  <ul>
-                    {employeeData.achievements.map((achievement) => (
-                      <li key={achievement.id}>{achievement.description}</li>
-                    ))}
-                  </ul>
-                </>
-              )}
+
+              {/* Skills Section */}
+              <div className="card mb-4">
+                <div className="card-body">
+                  <h5 className="card-title">Skills</h5>
+                  {skills.length > 0 ? (
+                    <ul>
+                      {skills.map(skill => (
+                        <li key={skill._id}>{skill.name}</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p>No skills available</p>
+                  )}
+                </div>
+              </div>
+
+              {/* Certifications Section */}
+              <div className="card mb-4">
+                <div className="card-body">
+                  <h5 className="card-title">Certifications</h5>
+                  {certifications.length > 0 ? (
+                    <ul>
+                      {certifications.map(cert => (
+                        <li key={cert._id}>{cert.name}</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p>No certifications available</p>
+                  )}
+                </div>
+              </div>
             </div>
           ) : (
-            <p>Loading employee data...</p>
+            <p>Loading profile data...</p>
           )}
         </div>
       </div>

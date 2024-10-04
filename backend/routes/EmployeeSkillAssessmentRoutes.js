@@ -4,7 +4,7 @@ const express = require('express');
 const {
   submitEmployeeSkillAssessment,
   getSkillAssessmentsByEmployee,
-  updateEmployeeSkillAssessment, // Updated function name
+  // updateEmployeeSkillAssessment, // Updated function name
   deleteEmployeeSkillAssessment,
 } = require('../controllers/EmployeeSkillAssessmentController');
 
@@ -18,7 +18,7 @@ router.post('/', authMiddleware, submitEmployeeSkillAssessment);
 router.get('/:employeeId', authMiddleware, getSkillAssessmentsByEmployee); // Added authMiddleware for security
 
 // Route to update a skill assessment by ID
-router.put('/:id', authMiddleware, updateEmployeeSkillAssessment); // Updated function name for clarity
+// router.put('/:id', authMiddleware, updateEmployeeSkillAssessment); // Updated function name for clarity
 
 // Route to delete a skill assessment by ID
 router.delete('/:id', authMiddleware, deleteEmployeeSkillAssessment); // Use DELETE for removals

@@ -5,7 +5,6 @@ import Chart from "react-apexcharts";
 
 const EmployeeDashboard = () => {
   const [totalCourses, setTotalCourses] = useState(0);
-  const [completedCourses, setCompletedCourses] = useState(0);
   const [assessments, setAssessments] = useState([]);
   const [marksData, setMarksData] = useState([]);
   const [marksBarChartOptions, setMarksBarChartOptions] = useState({});
@@ -13,6 +12,8 @@ const EmployeeDashboard = () => {
   const [marksPieChartOptions, setMarksPieChartOptions] = useState({});
   const [marksPieChartSeries, setMarksPieChartSeries] = useState([]);
   const [skillCounts, setSkillCounts] = useState({});
+  const [totalSkillsLearned, setTotalSkillsLearned] = useState(0);
+  const [coursesMap, setCoursesMap] = useState({});
 
   useEffect(() => {
     const fetchDashboardData = async () => {
@@ -21,9 +22,11 @@ const EmployeeDashboard = () => {
         const coursesData = await courseResponse.json();
         setTotalCourses(coursesData.length);
 
-        const completedResponse = await fetch("http://localhost:5000/api/completedCourses");
-        const completedData = await completedResponse.json();
-        setCompletedCourses(completedData.length);
+        const coursesMapping = {};
+        coursesData.forEach(course => {
+          coursesMapping[course._id] = course.name;
+        });
+        setCoursesMap(coursesMapping);
 
         const marksResponse = await fetch("http://localhost:5000/api/marks");
         const marksData = await marksResponse.json();
@@ -51,23 +54,33 @@ const EmployeeDashboard = () => {
         const data = await response.json();
         setAssessments(data);
 
-        // Count the occurrences of each skill
         const counts = data.reduce((acc, curr) => {
           const skill = curr.skills;
-          acc[skill] = (acc[skill] || 0) + 1; // Increment count for each skill
+          acc[skill] = (acc[skill] || 0) + 1;
           return acc;
         }, {});
         setSkillCounts(counts);
 
-        const skills = data.map((item) => item.skills);
+        // Calculate total skills learned by the employee
+        const totalSkills = Object.keys(counts).length;
+        setTotalSkillsLearned(totalSkills);
+
+        const skillsResponse = await fetch("http://localhost:5000/api/skills");
+        const skillsData = await skillsResponse.json();
+
+        const skillsMapping = {};
+        skillsData.forEach(skill => {
+          skillsMapping[skill._id] = skill.name;
+        });
+
+        const skills = data.map((item) => skillsMapping[item.skills]);
         const marks = data.map((item) => item.marks);
 
-        // Set up bar chart data
         setMarksBarChartOptions({
           chart: {
             id: "marks-bar-chart",
             toolbar: {
-              show: false, // Hide the toolbar
+              show: false,
             },
           },
           xaxis: {
@@ -100,7 +113,6 @@ const EmployeeDashboard = () => {
           },
         ]);
 
-        // Set up pie chart data
         setMarksPieChartOptions({
           chart: {
             id: "marks-pie-chart",
@@ -133,27 +145,26 @@ const EmployeeDashboard = () => {
         <div className="container mt-4 col-md-9">
           <h2 className="mb-4">Employee Dashboard</h2>
           <p>Welcome to your dashboard! Track your performance and progress.</p>
-          
+
           <div className="row mb-4">
             {/* Total Courses Card */}
-            <div className="col-lg-6 col-md-12 mb-4">
-              <div className="card shadow-sm h-100">
+            <div className="col-lg-4 col-md-6 mb-4">
+              <div className="card shadow-sm h-100 border-primary">
                 <div className="card-body text-center">
-                  <h5 className="card-title">
+                  <h5 className="card-title text-primary">
                     <i className="fas fa-book-open"></i> Total Courses
                   </h5>
                   <p className="card-text display-4">{totalCourses}</p>
                 </div>
               </div>
             </div>
-            {/* Completed Courses Card */}
-            <div className="col-lg-6 col-md-12 mb-4">
-              <div className="card shadow-sm h-100">
+
+            {/* Total Skills Learned Card */}
+            <div className="col-lg-4 col-md-6 mb-4">
+              <div className="card shadow-sm h-100 border-info">
                 <div className="card-body text-center">
-                  <h5 className="card-title">
-                    <i className="fas fa-check-circle"></i> Completed Courses
-                  </h5>
-                  <p className="card-text display-4">{completedCourses}</p>
+                  <h5 className="card-title text-info">Total Skills Learned</h5>
+                  <p className="card-text display-4">{totalSkillsLearned}</p>
                 </div>
               </div>
             </div>
@@ -188,20 +199,6 @@ const EmployeeDashboard = () => {
                 </div>
               </div>
             </div>
-          </div>
-
-          <div className="row">
-            {/* Cards for Skill Counts */}
-            {Object.entries(skillCounts).map(([skill, count]) => (
-              <div className="col-lg-4 mb-4" key={skill}>
-                <div className="card shadow-sm h-100">
-                  <div className="card-body text-center">
-                    <h5 className="card-title">{skill}</h5>
-                    <p className="card-text">Count: {count}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
           </div>
         </div>
       </div>

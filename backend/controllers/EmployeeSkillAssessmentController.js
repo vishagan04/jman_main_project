@@ -50,32 +50,32 @@ exports.getSkillAssessmentsByEmployee = async (req, res) => {
 };
 
 // Update a skill assessment by ID
-exports.updateEmployeeSkillAssessment = async (req, res) => {
-  const { certification, skills, marks } = req.body;
-  const { id } = req.params; // Get the assessment ID from request parameters
+// exports.updateEmployeeSkillAssessment = async (req, res) => {
+//   const { certification, skills, marks, _id } = req.body // Get the assessment ID from request parameters
 
-  // Validate the request body
-  if (!certification || !skills || !marks) {
-    return res.status(400).json({ message: 'All fields are required' });
-  }
+//   console.log("ID: ", _id)
+//   // Validate the request body
+//   if (!certification || !skills || !marks) {
+//     return res.status(400).json({ message: 'All fields are required' });
+//   }
 
-  try {
-    const updatedAssessment = await SkillAssessment.findByIdAndUpdate(
-      id,
-      { certification, skills, marks },
-      { new: true } // Return the updated document
-    );
+//   try {
+//     const updatedAssessment = await SkillAssessment.findByIdAndUpdate(
+//       _id,
+//       { certification, skills, marks },
+//       { new: true } // Return the updated document
+//     );
 
-    if (!updatedAssessment) {
-      return res.status(404).json({ message: 'Assessment not found' });
-    }
+//     if (!updatedAssessment) {
+//       return res.status(404).json({ message: 'Assessment not found' });
+//     }
 
-    res.status(200).json(updatedAssessment);
-  } catch (error) {
-    console.error('Error updating skill assessment:', error);
-    res.status(500).json({ message: 'Error updating skill assessment', error: error.message });
-  }
-};
+//     res.status(200).json(updatedAssessment);
+//   } catch (error) {
+//     console.error('Error updating skill assessment:', error);
+//     res.status(500).json({ message: 'Error updating skill assessment', error: error.message });
+//   }
+// };
 
 // Delete a skill assessment by ID
 exports.deleteEmployeeSkillAssessment = async (req, res) => {

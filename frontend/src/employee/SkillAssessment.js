@@ -11,7 +11,7 @@ const SkillAssessment = () => {
   const [showModal, setShowModal] = useState(false);
   const [currentAssessment, setCurrentAssessment] = useState(null);
   const [showAddModal, setShowAddModal] = useState(false);
-  const employeeId = JSON.parse(localStorage.getItem("employee")).id; // Get employeeId from localStorage
+  const employeeId = JSON.parse(localStorage.getItem("employee")).id;
 
   useEffect(() => {
     const fetchAssessments = async () => {
@@ -36,12 +36,10 @@ const SkillAssessment = () => {
 
     const fetchOptions = async () => {
       try {
-        // Fetch certifications
         const certResponse = await fetch("http://localhost:5000/api/courses");
         const certData = await certResponse.json();
         setCertificationOptions(certData);
 
-        // Fetch skills
         const skillResponse = await fetch("http://localhost:5000/api/skills");
         const skillData = await skillResponse.json();
         setSkillOptions(skillData);
@@ -52,7 +50,7 @@ const SkillAssessment = () => {
 
     fetchAssessments();
     fetchOptions();
-  }, [employeeId]);
+  }, [employeeId]); // Dependencies updated to avoid unnecessary calls
 
   const handleTakeAssessment = (assessment) => {
     setCurrentAssessment(assessment);
@@ -65,58 +63,8 @@ const SkillAssessment = () => {
   };
 
   const handleAddAssessmentSubmit = async (newAssessment) => {
-    try {
-      const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:5000/api/employeeSkillAssessment", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(newAssessment),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to submit assessment");
-      }
-
-      const savedAssessment = await response.json();
-      setAssessments((prev) => [...prev, savedAssessment]); // Add the new assessment to the state
-      setShowAddModal(false);
-    } catch (error) {
-      console.error("Error adding assessment:", error);
-    }
-  };
-
-  const handleEditAssessment = (assessment) => {
-    setCurrentAssessment(assessment);
-    setShowModal(true);
-  };
-
-  const handleUpdateAssessment = async (updatedAssessment) => {
-    try {
-      const token = localStorage.getItem("token");
-      const response = await fetch(`http://localhost:5000/api/employeeSkillAssessment/${updatedAssessment.id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(updatedAssessment),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to update assessment");
-      }
-
-      const data = await response.json();
-      setAssessments((prev) =>
-        prev.map((assessment) => (assessment._id === data._id ? data : assessment))
-      ); // Update the assessment in the state
-      setShowModal(false);
-    } catch (error) {
-      console.error("Error updating assessment:", error);
-    }
+    setAssessments((prev) => [...prev, newAssessment]); // Update assessments in the state
+    setShowAddModal(false); // Close the modal after successful submission
   };
 
   const handleDeleteAssessment = async (assessmentId) => {
@@ -133,14 +81,12 @@ const SkillAssessment = () => {
         throw new Error("Failed to delete assessment");
       }
 
-      // Filter out the deleted assessment
       setAssessments((prev) => prev.filter((assessment) => assessment._id !== assessmentId));
     } catch (error) {
       console.error("Error deleting assessment:", error);
     }
   };
 
-  // Function to get the name of the course and skill from their respective options
   const getCertificationName = (id) => {
     const certification = certificationOptions.find(cert => cert._id === id);
     return certification ? certification.name : "Unknown Certification";
@@ -153,18 +99,11 @@ const SkillAssessment = () => {
 
   return (
     <div>
-      {/* Navbar */}
       <EmployeeNavbar />
-
       <div className="row">
-        {/* Sidebar */}
         <EmployeeSidebar />
-
-        {/* Main Content */}
         <div className="container mt-4 col-md-9">
           <h1 className="mb-4">Skill Assessment</h1>
-
-          {/* Add Assessment Button */}
           <Button
             variant="success"
             className="mb-4"
@@ -172,8 +111,6 @@ const SkillAssessment = () => {
           >
             Add New Assessment
           </Button>
-
-          {/* Assessments Table */}
           <Table striped bordered hover>
             <thead>
               <tr>
@@ -191,12 +128,6 @@ const SkillAssessment = () => {
                   <td>{assessment.marks}</td>
                   <td>
                     <Button
-                      variant="warning"
-                      onClick={() => handleEditAssessment(assessment)}
-                    >
-                      Edit
-                    </Button>
-                    <Button
                       variant="danger"
                       onClick={() => handleDeleteAssessment(assessment._id)}
                       className="ml-2"
@@ -208,28 +139,6 @@ const SkillAssessment = () => {
               ))}
             </tbody>
           </Table>
-
-          {/* Modal for Taking or Editing Assessment */}
-          <Modal show={showModal} onHide={handleCloseModal} centered>
-            <Modal.Header closeButton>
-              <Modal.Title>{currentAssessment?.name}</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <p>{currentAssessment?.description}</p>
-              <SkillAssessmentForm
-                assessmentId={currentAssessment?._id}
-                employeeId={employeeId}
-                onSubmit={handleUpdateAssessment} // Update the function here
-              />
-            </Modal.Body>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={handleCloseModal}>
-                Close
-              </Button>
-            </Modal.Footer>
-          </Modal>
-
-          {/* Modal for Adding New Assessment */}
           <Modal show={showAddModal} onHide={() => setShowAddModal(false)} centered>
             <Modal.Header closeButton>
               <Modal.Title>Add New Assessment</Modal.Title>
