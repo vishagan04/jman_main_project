@@ -1,8 +1,7 @@
-// EmployeeSidebar.js
-
 import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import "./EmployeeSidebar.css"; // Import custom CSS for additional styling
 
 const EmployeeSidebar = () => {
   const navigate = useNavigate();
@@ -15,8 +14,8 @@ const EmployeeSidebar = () => {
   };
 
   return (
-    <nav className="col-md-3 col-lg-2 d-md-block bg-dark sidebar text-white">
-      <div className="position-sticky">
+    <nav className="col-3 col-lg-2 d-md-block bg-dark sidebar text-white h-auto">
+      <div className="position-fixed">
         <h5 className="sidebar-heading text-light mt-3">Employee Panel</h5>
         <ul className="nav flex-column">
           <li className="nav-item">
@@ -48,8 +47,8 @@ const EmployeeSidebar = () => {
           </li>
           <li className="nav-item">
             <NavLink 
-              onClick={logout}
-              className="nav-link text-white"
+              onClick={logout} // Ensure it's using the correct function name
+              className="nav-link text-white bg-danger" // Bootstrap's bg-danger class
               style={{ padding: "10px 15px", borderRadius: "5px" }}
             >
               Logout

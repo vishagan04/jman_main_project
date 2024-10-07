@@ -20,7 +20,7 @@ const EmployeeDashboard = () => {
       try {
         const courseResponse = await fetch("http://localhost:5000/api/courses");
         const coursesData = await courseResponse.json();
-        setTotalCourses(coursesData.length || 0); // Safely accessing length
+        setTotalCourses(coursesData.length || 0);
 
         const coursesMapping = {};
         coursesData.forEach(course => {
@@ -52,7 +52,7 @@ const EmployeeDashboard = () => {
         }
 
         const data = await response.json();
-        setAssessments(data || []); // Safely handling the data
+        setAssessments(data || []);
 
         const counts = (data || []).reduce((acc, curr) => {
           const skill = curr.skills;
@@ -63,7 +63,6 @@ const EmployeeDashboard = () => {
         }, {});
         setSkillCounts(counts);
 
-        // Calculate total skills learned by the employee
         const totalSkills = Object.keys(counts).length;
         setTotalSkillsLearned(totalSkills);
 
@@ -75,8 +74,8 @@ const EmployeeDashboard = () => {
           skillsMapping[skill._id] = skill.name;
         });
 
-        const skills = data.map((item) => skillsMapping[item.skills] || "Unknown"); // Handle undefined skills
-        const marks = data.map((item) => item.marks || 0); // Handle undefined marks
+        const skills = data.map((item) => skillsMapping[item.skills] || "Unknown");
+        const marks = data.map((item) => item.marks || 0);
 
         setMarksBarChartOptions({
           chart: {
@@ -140,78 +139,70 @@ const EmployeeDashboard = () => {
   }, []);
 
   return (
-    <div>
+    <div className="employee-dashboard vh-100 ">
       <EmployeeNavbar />
-      <div className="row">
+      <div className="row m-0 w-100 min-vh-100 z-0" style={{
+        // minHeight:"calc(100vh-7rem)",
+        paddingTop:"95px"
+      }}>
         <EmployeeSidebar />
-        <div className="container mt-4 col-md-9">
-          <h2 className="mb-4">Employee Dashboard</h2>
+        <div className="dashboard-content container mt-4 col-9 col-lg-10 z-0" style={{
+          zIndex: 0
+        }}>
+          <h2 className="mb-4 text-primary">Employee Dashboard</h2>
           <p>Welcome to your dashboard! Track your performance and progress.</p>
 
           <div className="row mb-4">
             {/* Total Courses Card */}
-            <div className="col-lg-4 col-md-6 mb-4">
-              <div className="card shadow-sm h-100 border-primary">
-                <div className="card-body text-center">
-                  <h5 className="card-title text-primary">
-                    <i className="fas fa-book-open"></i> Total Courses
-                  </h5>
-                  <p className="card-text display-4">{totalCourses}</p>
-                </div>
+            <div className="col-md-4">
+              <div className="card shadow-sm border border-light bg-dark text-light p-4">
+                <h4>Total Courses</h4>
+                <p>{totalCourses}</p>
               </div>
             </div>
-
             {/* Total Skills Learned Card */}
-            <div className="col-lg-4 col-md-6 mb-4">
-              <div className="card shadow-sm h-100 border-info">
-                <div className="card-body text-center">
-                  <h5 className="card-title text-info">Total Skills Learned</h5>
-                  <p className="card-text display-4">{totalSkillsLearned}</p>
-                </div>
+            <div className="col-md-4">
+              <div className="card shadow-sm border border-light bg-dark text-light p-4">
+                <h4>Total Skills Learned</h4>
+                <p>{totalSkillsLearned}</p>
               </div>
             </div>
-
-            {/* Total Assessments Taken Card */}
-            <div className="col-lg-4 col-md-6 mb-4">
-              <div className="card shadow-sm h-100 border-success">
-                <div className="card-body text-center">
-                  <h5 className="card-title text-success">Total Assessments Taken</h5>
-                  <p className="card-text display-4">{assessments.length}</p>
-                </div>
+            {/* Total Assessments Card */}
+            <div className="col-md-4">
+              <div className="card shadow-sm border border-light bg-dark text-light p-4">
+                <h4>Total Assessments Taken</h4>
+                <p>{assessments.length}</p>
               </div>
             </div>
           </div>
 
-          <div className="row mb-4">
-            {/* Bar Chart for Skills and Marks */}
-            <div className="col-lg-6 mb-4">
-              <div className="card shadow-sm h-100">
-                <div className="card-body" style={{ padding: "1rem" }}>
-                  <h5 className="card-title">Skills and Marks (Bar Chart)</h5>
-                  <div style={{ width: "80%", margin: "0 auto" }}>
-                    <Chart
-                      options={marksBarChartOptions}
-                      series={marksBarChartSeries}
-                      type="bar"
-                      width="100%"
-                    />
-                  </div>
+          {/* Bar and Pie Charts */}
+          <div className="row">
+            <div className="col-md-6 mb-4">
+              <div className="card shadow-sm bg-light p-4">
+                <h4>Skill-wise Marks</h4>
+                <div className="chart-container" style={{ height: "300px" }}>
+                  <Chart
+                    options={marksBarChartOptions}
+                    series={marksBarChartSeries}
+                    type="bar"
+                    width="100%"
+                    height="300px"
+                  />
                 </div>
               </div>
             </div>
-            {/* Pie Chart for Marks Distribution */}
-            <div className="col-lg-6 mb-4">
-              <div className="card shadow-sm h-100">
-                <div className="card-body" style={{ padding: "1rem" }}>
-                  <h5 className="card-title">Marks Distribution (Pie Chart)</h5>
-                  <div style={{ width: "80%", margin: "0 auto" }}>
-                    <Chart
-                      options={marksPieChartOptions}
-                      series={marksPieChartSeries}
-                      type="pie"
-                      width="100%"
-                    />
-                  </div>
+            <div className="col-md-6 mb-4">
+              <div className="card shadow-sm bg-light p-4">
+                <h4>Marks Distribution</h4>
+                <div className="chart-container" style={{ height: "300px" }}>
+                  <Chart
+                    options={marksPieChartOptions}
+                    series={marksPieChartSeries}
+                    type="pie"
+                    width="100%"
+                    height="300px"
+                  />
                 </div>
               </div>
             </div>

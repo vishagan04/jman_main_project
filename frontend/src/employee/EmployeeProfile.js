@@ -45,9 +45,12 @@ const EmployeeProfile = () => {
   }, [userData, token, isDataFetched]); // Dependencies array includes userData and token
 
   return (
-    <div>
+    <div className="employee-dashboard vh-100 ">
       <EmployeeNavbar />
-      <div className="row">
+      <div className="row m-0 w-100 min-vh-100 z-0" style={{
+        // minHeight:"calc(100vh-7rem)",
+        paddingTop:"95px"
+      }}>
         <EmployeeSidebar />
         <div className="container mt-4 col-md-9">
           <h1 className="mb-4">Employee Profile</h1>

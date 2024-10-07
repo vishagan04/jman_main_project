@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Logo from "../assets/logo.png"; // Example import for the logo
 import Img from "../assets/avathar.png";
+import './Navbar.css'; // Ensure you import your CSS file
 
 const Navbar = () => {
   const [userEmail, setUserEmail] = useState("Email not present");
@@ -16,15 +17,15 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav className="navbar sticky-top bg-dark">
-      <div className="container-fluid d-flex justify-content-between align-items-center py-3 border-bottom">
+    <nav className="navbar bg-dark text-white shadow-sm sticky-top" style={{ zIndex: 10 }}>
+      <div className="container-fluid d-flex justify-content-between align-items-center py-3 border-bottom border-light">
         {/* Left Side: Logo and Brand Name */}
         <a className="navbar-brand text-white h1 d-flex align-items-center" href="/Home">
           <img
             src={Logo}
             width="40"
             height="40"
-            className="d-inline-block align-top me-3"
+            className="d-inline-block align-top me-2"
             alt="Logo"
           />
           J-Evaluate
@@ -33,13 +34,13 @@ const Navbar = () => {
         {/* Center: Search Form */}
         <form className="d-flex" role="search">
           <input
-            className="form-control me-2"
+            className="form-control me-2 bg-dark text-white border-light"
             type="search"
             placeholder="Search"
             aria-label="Search"
-            style={{ minWidth: "200px" }}
+            style={{ borderRadius: "5px", minWidth: "200px" }}
           />
-          <button className="btn btn-success" type="submit">
+          <button className="btn btn-outline-light" type="submit">
             Search
           </button>
         </form>
@@ -54,7 +55,7 @@ const Navbar = () => {
           <img
             src={Img}
             alt="User Avatar"
-            className="rounded-circle"
+            className="rounded-circle border border-light"
             style={{ width: "45px", height: "45px", objectFit: "cover" }}
           />
         </div>

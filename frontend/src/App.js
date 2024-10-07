@@ -20,6 +20,9 @@ const App = () => {
     <Router>
       <Routes>
         {/* Admin Routes */}
+        {/* <Route path="/admin" element={}>
+        <Route index="true" element={<AdminDashboard />} />
+        </Route> */}
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
         <Route path="/admin/employees" element={<EmployeeList />} />
         <Route path="/admin/add-employee" element={<AddEditEmployee />} />
@@ -28,6 +31,7 @@ const App = () => {
         <Route path="/Login" element={<Login />} />
 
         {/* Employee Routes */}
+        
         <Route path="/employee/dashboard" element={<EmployeeDashboard />} />
         <Route path="/employee/profile" element={<EmployeeProfile />} />
         <Route path="/employee/assessment" element={<SkillAssessment />} />

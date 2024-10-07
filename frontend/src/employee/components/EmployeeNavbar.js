@@ -7,23 +7,23 @@ const EmployeeNavbar = () => {
 
   useEffect(() => {
     // Retrieve the user data from localStorage
-    const userData = localStorage.getItem("employee"); // Assuming you stored the entire object with the key 'userData'
-    
+    const userData = localStorage.getItem("employee");
+
     if (userData) {
-      const parsedUserData = JSON.parse(userData); // Parse the JSON string into an object
-      setUserEmail(parsedUserData.email || "Email not present"); // Set the email from the parsed object
+      const parsedUserData = JSON.parse(userData); 
+      setUserEmail(parsedUserData.email || "Email not present"); 
     }
   }, []);
 
   return (
-    <nav className="navbar bg-dark text-white ">
+    <nav className="navbar bg-dark text-white shadow-sm position-fixed w-100" style={{zIndex:10}}>
       <div className="container-fluid d-flex justify-content-between align-items-center pt-3 pb-2 border-bottom border-light">
         {/* Left Side: Logo and Brand Name */}
         <a className="navbar-brand text-white h1 d-flex align-items-center" href="/Home">
           <img
             src={Logo}
-            width="30"
-            height="30"
+            width="40"
+            height="40"
             className="d-inline-block align-top me-2"
             alt="Logo"
           />
@@ -33,10 +33,11 @@ const EmployeeNavbar = () => {
         {/* Center: Search Form */}
         <form className="d-flex" role="search">
           <input
-            className="form-control me-2"
+            className="form-control me-2 bg-dark text-white border-light"
             type="search"
             placeholder="Search"
             aria-label="Search"
+            style={{ borderRadius: "5px" }}
           />
           <button className="btn btn-outline-light" type="submit">
             Search
@@ -53,7 +54,7 @@ const EmployeeNavbar = () => {
           <img
             src={Img}
             alt="User Avatar"
-            className="rounded-circle"
+            className="rounded-circle border border-light"
             style={{ width: "40px", height: "40px" }}
           />
         </div>

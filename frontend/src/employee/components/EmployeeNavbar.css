@@ -1,0 +1,27 @@
+.navbar {
+    background-color: #343a40; /* Same background color as the sidebar */
+    border-bottom: 1px solid #495057; /* Slightly lighter border */
+  }
+  
+  .navbar .form-control {
+    background-color: #495057; /* Match the sidebar's hover effect */
+    color: #fff;
+    border: 1px solid #6c757d;
+  }
+  
+  .navbar .form-control::placeholder {
+    color: #adb5bd; /* Lighter text for the placeholder */
+  }
+  
+  .navbar .btn-outline-light {
+    border-color: #adb5bd;
+  }
+  
+  .navbar-brand img {
+    border-radius: 5px;
+  }
+  
+  .navbar .rounded-circle {
+    border: 2px solid #adb5bd; /* Light border around the avatar */
+  }
+  

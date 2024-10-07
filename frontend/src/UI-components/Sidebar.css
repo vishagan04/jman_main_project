@@ -1,0 +1,40 @@
+.sidebar {
+    height: 100%; /* Full height */
+    top: 0;
+    left: 0;
+    padding-top: 20px;
+    overflow-x: hidden; /* Hide horizontal overflow */
+    background-color: #343a40; /* Dark background color */
+}
+
+.nav-link {
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.nav-link:hover {
+    background-color: #495057; /* Slightly lighter on hover */
+}
+
+.nav-link.active {
+    background-color: #007bff; /* Active link color */
+}
+
+.sidebar-heading {
+    padding-left: 15px;
+    font-size: 1.2rem;
+}
+
+/* Style for the Logout button */
+.logout-button {
+    background-color: #dc3545; /* Red background color */
+    color: white; /* Text color */
+    display: block; /* Make it block to take full width */
+    text-align: center; /* Center the text */
+}
+
+.logout-button:hover {
+    background-color: rgba(220, 53, 69, 0.8); /* Less opaque red on hover */
+    color: white; /* Keep text color white */
+}
