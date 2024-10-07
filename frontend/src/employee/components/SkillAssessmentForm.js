@@ -67,7 +67,11 @@ const SkillAssessmentForm = ({ employeeId, onSubmit }) => {
         setSkills("");
         setMarks("");
         alert("Assessment submitted successfully!");
-      } else {
+      } 
+      else if (response.status == 400){
+        alert("Assesment Already taken")
+      }
+      else {
         alert("Failed to submit assessment.");
       }
     } catch (error) {

@@ -10,21 +10,33 @@ exports.submitEmployeeSkillAssessment = async (req, res) => {
     return res.status(400).json({ message: 'All fields are required' });
   }
 
-  const skillAssessment = new SkillAssessment({
-    employeeId ,
-    certification,
-    skills,
-    marks,
-    approvalStatus: 'Pending', // Set approval status to "Pending" upon submission
-  });
-
   try {
+    // Check if the employee has already taken the certification
+    const existingAssessment = await SkillAssessment.findOne({
+      employeeId,
+      certification,
+    });
+
+    if (existingAssessment) {
+      return res.status(400).json({
+        message: 'You have already taken this certification and cannot submit it again.',
+      });
+    }
+
+    const skillAssessment = new SkillAssessment({
+      employeeId,
+      certification,
+      skills,
+      marks,
+      approvalStatus: 'Pending', // Set approval status to "Pending" upon submission
+    });
+
     const savedAssessment = await skillAssessment.save();
     res.status(201).json(savedAssessment);
   } catch (error) {
     console.error('Error submitting skill assessment:', error);
-    if (error.name === "ValidationError") {
-      return res.status(400).json({ message: error.message });
+    if (error.name === 'ValidationError') {
+      return res.status(404).json({ message: error.message });
     }
     res.status(500).json({ message: 'Error submitting skill assessment', error: error.message });
   }
