@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../UI-components/Navbar";
 import Sidebar from "../UI-components/Sidebar";
 import { Modal, Button } from "react-bootstrap";
+import { ToastContainer, toast } from 'react-toastify'; // Import Toastify
+import 'react-toastify/dist/ReactToastify.css';  // Import Toastify CSS
 
 const CoursesManagement = () => {
   const [courses, setCourses] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false); // State for delete confirmation modal
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(null);
   const [formData, setFormData] = useState({
     id: "",
@@ -18,7 +20,6 @@ const CoursesManagement = () => {
   const [currentCourseId, setCurrentCourseId] = useState(null);
 
   useEffect(() => {
-    // Fetch courses from the API
     const fetchCourses = async () => {
       try {
         const response = await fetch("http://localhost:5000/api/courses");
@@ -26,6 +27,7 @@ const CoursesManagement = () => {
         setCourses(data);
       } catch (error) {
         console.error("Error fetching courses:", error);
+        toast.error("Error fetching courses!"); // Toast for fetch error
       }
     };
 
@@ -64,14 +66,17 @@ const CoursesManagement = () => {
               course.id === currentCourseId ? updatedCourse : course
             )
           );
+          toast.success("Course updated successfully!"); // Toast for successful update
           setIsEditing(false);
           setFormData({ id: "", name: "", description: "", competencyLevel: "beginner" });
           setShowModal(false);
         } else {
           console.error("Error updating course:", response.statusText);
+          toast.error("Failed to update course!"); // Toast for update failure
         }
       } catch (error) {
         console.error("Error updating course:", error);
+        toast.error("Error updating course!"); // Toast for error
       }
     } else {
       // Add new course if we are not editing
@@ -87,13 +92,16 @@ const CoursesManagement = () => {
         if (response.ok) {
           const addedCourse = await response.json();
           setCourses([...courses, addedCourse]);
+          toast.success("Course added successfully!"); // Toast for successful add
           setFormData({ id: "", name: "", description: "", competencyLevel: "beginner" });
           setShowModal(false);
         } else {
           console.error("Error adding course:", response.statusText);
+          toast.error("Failed to add course!"); // Toast for add failure
         }
       } catch (error) {
         console.error("Error adding course:", error);
+        toast.error("Error adding course!"); // Toast for error
       }
     }
   };
@@ -118,14 +126,17 @@ const CoursesManagement = () => {
 
       if (response.ok) {
         setCourses(courses.filter((course) => course.id !== confirmDelete));
+        toast.success("Course deleted successfully!"); // Toast for successful deletion
       } else {
         console.error("Error deleting course:", response.statusText);
+        toast.error("Failed to delete course!"); // Toast for delete failure
       }
     } catch (error) {
       console.error("Error deleting course:", error);
+      toast.error("Error deleting course!"); // Toast for error
     } finally {
       setConfirmDelete(null);
-      setShowDeleteModal(false);
+      setShowDeleteModal(false); // Close delete modal
     }
   };
 
@@ -142,6 +153,7 @@ const CoursesManagement = () => {
       <div className="row m-0 w-100 min-vh-100 z-0">
         <Sidebar />
         <div className="dashboard-content container mt-4 col-9 col-lg-10 z-0">
+          <ToastContainer /> {/* Toastify Container */}
           <h1 className="mb-4">Courses Management</h1>
           <button
             className="btn btn-primary mb-3"

@@ -2,17 +2,19 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../UI-components/Navbar";
 import Sidebar from "../UI-components/Sidebar";
 import { Modal, Button } from "react-bootstrap";
-import AddEditEmployee from "./AddEditEmployee"; // Import the AddEditEmployee component
+import AddEditEmployee from "./AddEditEmployee";
+import { ToastContainer, toast } from 'react-toastify'; // Import Toastify
+import 'react-toastify/dist/ReactToastify.css';  // Import Toastify CSS
 
 const EmployeeList = () => {
   const [employees, setEmployees] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false); // State for delete confirmation modal
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
-  const [employeeToDelete, setEmployeeToDelete] = useState(null); // State for the employee to delete
+  const [employeeToDelete, setEmployeeToDelete] = useState(null);
 
   useEffect(() => {
     const fetchEmployees = async () => {
@@ -27,6 +29,7 @@ const EmployeeList = () => {
       } catch (error) {
         console.error("Error fetching employees:", error);
         setError(error.message);
+        toast.error("Error fetching employees!");
       } finally {
         setLoading(false);
       }
@@ -54,16 +57,18 @@ const EmployeeList = () => {
 
   const handleEmployeeAdded = (employee) => {
     if (isEditing) {
-      setEmployees(employees.map(emp => (emp._id === employee._id ? employee : emp))); // Update the edited employee
+      setEmployees(employees.map(emp => (emp._id === employee._id ? employee : emp)));
+      toast.success("Employee updated successfully!"); // Toast for update
     } else {
-      setEmployees([...employees, employee]); // Add the new employee
+      setEmployees([...employees, employee]);
+      toast.success("Employee added successfully!"); // Toast for add
     }
-    handleCloseModal(); // Close the modal after adding or editing
+    handleCloseModal();
   };
 
   const handleDelete = (id) => {
-    setEmployeeToDelete(id); // Set the employee ID to delete
-    setShowDeleteModal(true); // Show the delete confirmation modal
+    setEmployeeToDelete(id);
+    setShowDeleteModal(true);
   };
 
   const confirmDeleteEmployee = async () => {
@@ -74,14 +79,17 @@ const EmployeeList = () => {
 
       if (response.ok) {
         setEmployees(employees.filter((employee) => employee._id !== employeeToDelete));
+        toast.success("Employee deleted successfully!"); // Toast for delete success
       } else {
         console.error("Error deleting employee:", response.statusText);
+        toast.error("Failed to delete employee!"); // Toast for delete failure
       }
     } catch (error) {
       console.error("Error deleting employee:", error);
+      toast.error("Error deleting employee!");
     } finally {
-      setShowDeleteModal(false); // Close the delete confirmation modal
-      setEmployeeToDelete(null); // Clear the employee ID
+      setShowDeleteModal(false);
+      setEmployeeToDelete(null);
     }
   };
 
@@ -91,6 +99,7 @@ const EmployeeList = () => {
       <div className="row m-0 w-100 min-vh-100 z-0">
         <Sidebar />
         <div className="dashboard-content container mt-4 col-9 col-lg-10 z-0" style={{ zIndex: 0 }}>
+          <ToastContainer /> {/* Toastify Container */}
           <h1 className="mb-4">Employee List</h1>
           <button className="btn btn-primary mb-3" onClick={handleAddEmployee}>
             Add Employee

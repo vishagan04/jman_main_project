@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Button, Alert, Card, Container, Spinner } from 'react-bootstrap';
+import { ToastContainer, toast } from 'react-toastify'; // Import Toastify
+import 'react-toastify/dist/ReactToastify.css'; // Import Toastify CSS
 import './SkillAssessmentForm.css'; // Import custom styles
 
 const SkillAssessmentForm = ({ employeeId, onSubmit }) => {
@@ -9,7 +11,6 @@ const SkillAssessmentForm = ({ employeeId, onSubmit }) => {
   const [certificationOptions, setCertificationOptions] = useState([]);
   const [skillOptions, setSkillOptions] = useState([]);
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false); // Loading state
 
   useEffect(() => {
@@ -43,6 +44,7 @@ const SkillAssessmentForm = ({ employeeId, onSubmit }) => {
     // Validate marks input
     if (!marks || isNaN(marks) || marks < 0 || marks > 100) {
       setError("Please enter a valid score between 0 and 100.");
+      toast.error("Please enter a valid score between 0 and 100."); // Toastify error
       return;
     }
 
@@ -72,19 +74,19 @@ const SkillAssessmentForm = ({ employeeId, onSubmit }) => {
         setCertification("");
         setSkills("");
         setMarks("");
-        setSuccess("Assessment submitted successfully!");
         setError('');
+        toast.success("Assessment submitted successfully!"); // Toastify success
       } else if (response.status === 400) {
         setError("Assessment already taken.");
-        setSuccess('');
+        toast.error("Assessment already taken."); // Toastify error
       } else {
         setError("Failed to submit assessment.");
-        setSuccess('');
+        toast.error("Failed to submit assessment."); // Toastify error
       }
     } catch (error) {
       console.error("Error:", error);
       setError("An error occurred while submitting the assessment.");
-      setSuccess('');
+      toast.error("An error occurred while submitting the assessment."); // Toastify error
     } finally {
       setLoading(false); // Reset loading state
     }
@@ -92,10 +94,10 @@ const SkillAssessmentForm = ({ employeeId, onSubmit }) => {
 
   return (
     <Container className="mt-5">
+      <ToastContainer /> {/* Toastify container */}
       <Card className="shadow-sm">
         <Card.Body>
           <Card.Title className="text-center text-primary mb-4">Skill Assessment Form</Card.Title>
-          {success && <Alert variant="success">{success}</Alert>}
           {error && <Alert variant="danger">{error}</Alert>}
           <Form onSubmit={handleSubmit}>
             <Form.Group controlId="certification">

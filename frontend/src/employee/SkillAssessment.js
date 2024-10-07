@@ -3,6 +3,8 @@ import EmployeeNavbar from "./components/EmployeeNavbar";
 import EmployeeSidebar from "./components/EmployeeSidebar";
 import { Button, Modal, Table, Tooltip, OverlayTrigger } from "react-bootstrap";
 import SkillAssessmentForm from "./components/SkillAssessmentForm";
+import { ToastContainer, toast } from 'react-toastify'; // Import Toastify
+import 'react-toastify/dist/ReactToastify.css'; // Import Toastify CSS
 
 const SkillAssessment = () => {
   const [assessments, setAssessments] = useState([]);
@@ -75,8 +77,10 @@ const SkillAssessment = () => {
       setAssessments((prev) =>
         prev.filter((assessment) => assessment._id !== assessmentId)
       );
+      toast.success("Assessment deleted successfully!"); // Toast for successful deletion
     } catch (error) {
       console.error("Error deleting assessment:", error);
+      toast.error("Failed to delete assessment!"); // Toast for failure
     }
   };
 
@@ -108,6 +112,7 @@ const SkillAssessment = () => {
             zIndex: 0,
           }}
         >
+          <ToastContainer /> {/* Toastify Container */}
           <h1 className="mb-4">Skill Assessment</h1>
           <Button
             variant="success"
@@ -181,6 +186,7 @@ const SkillAssessment = () => {
                 onSubmit={(newAssessment) => {
                   newAssessment.approvalStatus = "Pending"; // Set initial status as "Pending"
                   setAssessments((prev) => [...prev, newAssessment]);
+                  toast.success("Assessment added successfully!"); // Toast for successful addition
                   setShowAddModal(false);
                 }}
               />

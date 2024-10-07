@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { toast } from 'react-toastify'; // Import Toastify
 
 const AddEditEmployee = ({ onEmployeeAdded, employeeToEdit, onClose }) => {
   const [formData, setFormData] = useState({
@@ -11,7 +12,7 @@ const AddEditEmployee = ({ onEmployeeAdded, employeeToEdit, onClose }) => {
 
   useEffect(() => {
     if (employeeToEdit) {
-      setFormData(employeeToEdit); // Populate the form with existing employee data for editing
+      setFormData(employeeToEdit);
     } else {
       setFormData({
         name: "",
@@ -54,7 +55,12 @@ const AddEditEmployee = ({ onEmployeeAdded, employeeToEdit, onClose }) => {
       const addedOrUpdatedEmployee = await response.json();
       onEmployeeAdded(addedOrUpdatedEmployee);
 
-      // Reset form data after submission
+      if (employeeToEdit) {
+        toast.success("Employee updated successfully!");
+      } else {
+        toast.success("Employee added successfully!");
+      }
+
       setFormData({
         name: "",
         email: "",
@@ -62,9 +68,11 @@ const AddEditEmployee = ({ onEmployeeAdded, employeeToEdit, onClose }) => {
         department: "",
         password: "",
       });
-      onClose(); // Close the modal after submission
+
+      onClose();
     } catch (error) {
       console.error("Error adding/editing employee:", error);
+      toast.error("Failed to add/edit employee.");
     }
   };
 

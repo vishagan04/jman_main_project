@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../UI-components/Navbar";
 import Sidebar from "../UI-components/Sidebar";
 import { Modal, Button } from "react-bootstrap";
+import { ToastContainer, toast } from 'react-toastify'; // Import Toastify
+import 'react-toastify/dist/ReactToastify.css';  // Import Toastify CSS
 
 const SkillsManagement = () => {
   const [skills, setSkills] = useState([]);
@@ -24,6 +26,7 @@ const SkillsManagement = () => {
         setSkills(data);
       } catch (error) {
         console.error("Error fetching skills:", error);
+        toast.error("Error fetching skills!"); // Toast for fetch error
       }
     };
 
@@ -60,14 +63,17 @@ const SkillsManagement = () => {
               skill.id === currentSkillId ? updatedSkill : skill
             )
           );
+          toast.success("Skill updated successfully!"); // Toast for successful update
           setIsEditing(false);
           setFormData({ id: "", name: "", description: "" });
           setShowModal(false);
         } else {
           console.error("Error updating skill:", response.statusText);
+          toast.error("Failed to update skill!"); // Toast for update failure
         }
       } catch (error) {
         console.error("Error updating skill:", error);
+        toast.error("Error updating skill!"); // Toast for error
       }
     } else {
       try {
@@ -82,13 +88,16 @@ const SkillsManagement = () => {
         if (response.ok) {
           const addedSkill = await response.json();
           setSkills([...skills, addedSkill]);
+          toast.success("Skill added successfully!"); // Toast for successful add
           setFormData({ id: "", name: "", description: "" });
           setShowModal(false);
         } else {
           console.error("Error adding skill:", response.statusText);
+          toast.error("Failed to add skill!"); // Toast for add failure
         }
       } catch (error) {
         console.error("Error adding skill:", error);
+        toast.error("Error adding skill!"); // Toast for error
       }
     }
   };
@@ -113,11 +122,14 @@ const SkillsManagement = () => {
 
       if (response.ok) {
         setSkills(skills.filter((skill) => skill.id !== confirmDelete));
+        toast.success("Skill deleted successfully!"); // Toast for successful deletion
       } else {
         console.error("Error deleting skill:", response.statusText);
+        toast.error("Failed to delete skill!"); // Toast for delete failure
       }
     } catch (error) {
       console.error("Error deleting skill:", error);
+      toast.error("Error deleting skill!"); // Toast for error
     } finally {
       setConfirmDelete(null); // Reset confirmation
       setShowDeleteModal(false); // Close delete modal
@@ -136,6 +148,7 @@ const SkillsManagement = () => {
       <div className="row m-0 w-100 min-vh-100 z-0">
         <Sidebar />
         <div className="dashboard-content container mt-4 col-9 col-lg-10 z-0">
+          <ToastContainer /> {/* Toastify Container */}
           <h1 className="mb-4">Skills Management</h1>
           <button
             className="btn btn-primary mb-3"
