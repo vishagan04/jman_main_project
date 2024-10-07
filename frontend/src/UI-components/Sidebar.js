@@ -6,7 +6,7 @@ import "./Sidebar.css"; // Import your custom CSS for additional styling
 const Sidebar = () => {
   const navigate = useNavigate();
 
-  const Logout = (e) => { 
+  const handleLogout = (e) => {
     e.preventDefault();
     Cookies.remove("role");
     localStorage.clear();
@@ -22,7 +22,6 @@ const Sidebar = () => {
             <NavLink 
               to="/admin/dashboard" 
               className={({ isActive }) => `nav-link text-white ${isActive ? 'active' : ''}`}
-              style={{ padding: "10px 15px", borderRadius: "5px" }}
             >
               Dashboard
             </NavLink>
@@ -31,7 +30,6 @@ const Sidebar = () => {
             <NavLink 
               to="/admin/employees" 
               className={({ isActive }) => `nav-link text-white ${isActive ? 'active' : ''}`}
-              style={{ padding: "10px 15px", borderRadius: "5px" }}
             >
               Employee List
             </NavLink>
@@ -40,7 +38,6 @@ const Sidebar = () => {
             <NavLink 
               to="/admin/skills" 
               className={({ isActive }) => `nav-link text-white ${isActive ? 'active' : ''}`}
-              style={{ padding: "10px 15px", borderRadius: "5px" }}
             >
               Skills Management
             </NavLink>
@@ -49,19 +46,26 @@ const Sidebar = () => {
             <NavLink 
               to="/admin/courses" 
               className={({ isActive }) => `nav-link text-white ${isActive ? 'active' : ''}`}
-              style={{ padding: "10px 15px", borderRadius: "5px" }}
             >
               Courses Management
             </NavLink>
           </li>
           <li className="nav-item">
             <NavLink 
-              onClick={Logout} 
-              className="nav-link text-white bg-danger" // Bootstrap's bg-danger class
-              style={{ padding: "10px 15px", borderRadius: "5px" }}
+              to="/admin/skill-approval" 
+              className={({ isActive }) => `nav-link text-white ${isActive ? 'active' : ''}`}
+            >
+              Skill Approval
+            </NavLink>
+          </li>
+          <li className="nav-item">
+            <button 
+              onClick={handleLogout} 
+              className="nav-link text-white bg-danger w-100 text-start" // Full-width button with Bootstrap's bg-danger class
+              style={{ padding: "10px 15px", borderRadius: "5px", border: "none" }} // Style can be moved to CSS
             >
               Logout
-            </NavLink>
+            </button>
           </li>
         </ul>
       </div>

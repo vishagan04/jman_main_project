@@ -1,10 +1,8 @@
-// backend/routes/employeeSkillAssessment.js
-
 const express = require('express');
 const {
   submitEmployeeSkillAssessment,
   getSkillAssessmentsByEmployee,
-  // updateEmployeeSkillAssessment, // Updated function name
+  getAllSkillAssessments,  // Import the new function
   deleteEmployeeSkillAssessment,
 } = require('../controllers/EmployeeSkillAssessmentController');
 
@@ -15,12 +13,12 @@ const { authMiddleware } = require('../middleware/authMiddleware');
 router.post('/', authMiddleware, submitEmployeeSkillAssessment);
 
 // Route to get skill assessments for a specific employee
-router.get('/:employeeId', authMiddleware, getSkillAssessmentsByEmployee); // Added authMiddleware for security
+router.get('/:employeeId', authMiddleware, getSkillAssessmentsByEmployee);
 
-// Route to update a skill assessment by ID
-// router.put('/:id', authMiddleware, updateEmployeeSkillAssessment); // Updated function name for clarity
+// Route to fetch all skill assessments
+router.get('/', getAllSkillAssessments);  // New route for fetching all assessments
 
 // Route to delete a skill assessment by ID
-router.delete('/:id', authMiddleware, deleteEmployeeSkillAssessment); // Use DELETE for removals
+router.delete('/:id', authMiddleware, deleteEmployeeSkillAssessment);
 
 module.exports = router;

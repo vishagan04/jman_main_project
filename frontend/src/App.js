@@ -7,6 +7,7 @@ import EmployeeList from "./admin/EmployeeList";
 import AddEditEmployee from "./admin/AddEditEmployee";
 import SkillsManagement from "./admin/SkillsManagement";
 import CoursesManagement from "./admin/CoursesManagement";
+import SkillApproval from "./admin/SkillApproval"; // Import Skill Approval
 import Logout from "./Logout";
 import Login from "./login";
 
@@ -20,24 +21,19 @@ const App = () => {
     <Router>
       <Routes>
         {/* Admin Routes */}
-        {/* <Route path="/admin" element={}>
-        <Route index="true" element={<AdminDashboard />} />
-        </Route> */}
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
         <Route path="/admin/employees" element={<EmployeeList />} />
         <Route path="/admin/add-employee" element={<AddEditEmployee />} />
         <Route path="/admin/skills" element={<SkillsManagement />} />
         <Route path="/admin/courses" element={<CoursesManagement />} />
-        <Route path="/Login" element={<Login />} />
+        <Route path="/admin/skill-approval" element={<SkillApproval />} /> {/* New Skill Approval route */}
+        <Route path="/login" element={<Login />} />
 
         {/* Employee Routes */}
-        
         <Route path="/employee/dashboard" element={<EmployeeDashboard />} />
         <Route path="/employee/profile" element={<EmployeeProfile />} />
         <Route path="/employee/assessment" element={<SkillAssessment />} />
         <Route path="/employee/logout" element={<Logout />} />
-        <Route path="/employee/logout" element={<Logout />} />
-
       </Routes>
     </Router>
   );

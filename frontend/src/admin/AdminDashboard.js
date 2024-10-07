@@ -63,7 +63,9 @@ const AdminDashboard = () => {
       // minHeight:"calc(100vh-7rem)",
     }}>
       <Sidebar />
-        <div className="container mt-4 col-md-9">
+      <div className="dashboard-content container mt-4 col-9 col-lg-10 z-0" style={{
+          zIndex: 0
+        }}>
           <h1 className="mb-4">Admin Dashboard</h1>
           <div className="card">
             <div className="card-body">

@@ -1,5 +1,3 @@
-// backend/controllers/EmployeeSkillAssessmentController.js
-
 const SkillAssessment = require('../models/EmployeeSkillAssessment'); // Import the model
 
 // Submit a skill assessment for an employee
@@ -13,10 +11,11 @@ exports.submitEmployeeSkillAssessment = async (req, res) => {
   }
 
   const skillAssessment = new SkillAssessment({
-    employeeId,
+    employeeId ,
     certification,
     skills,
     marks,
+    approvalStatus: 'Pending', // Set approval status to "Pending" upon submission
   });
 
   try {
@@ -49,33 +48,17 @@ exports.getSkillAssessmentsByEmployee = async (req, res) => {
   }
 };
 
-// Update a skill assessment by ID
-// exports.updateEmployeeSkillAssessment = async (req, res) => {
-//   const { certification, skills, marks, _id } = req.body // Get the assessment ID from request parameters
-
-//   console.log("ID: ", _id)
-//   // Validate the request body
-//   if (!certification || !skills || !marks) {
-//     return res.status(400).json({ message: 'All fields are required' });
-//   }
-
-//   try {
-//     const updatedAssessment = await SkillAssessment.findByIdAndUpdate(
-//       _id,
-//       { certification, skills, marks },
-//       { new: true } // Return the updated document
-//     );
-
-//     if (!updatedAssessment) {
-//       return res.status(404).json({ message: 'Assessment not found' });
-//     }
-
-//     res.status(200).json(updatedAssessment);
-//   } catch (error) {
-//     console.error('Error updating skill assessment:', error);
-//     res.status(500).json({ message: 'Error updating skill assessment', error: error.message });
-//   }
-// };
+// Get all skill assessments
+exports.getAllSkillAssessments = async (req, res) => {
+  try {
+    const skillAssessments = await SkillAssessment.find()
+      .populate('employeeId'); // Populate the employeeId reference
+    res.status(200).json(skillAssessments);
+  } catch (error) {
+    console.error('Error fetching all skill assessments:', error);
+    res.status(500).json({ message: 'Error fetching all skill assessments', error: error.message });
+  }
+};
 
 // Delete a skill assessment by ID
 exports.deleteEmployeeSkillAssessment = async (req, res) => {

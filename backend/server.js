@@ -4,10 +4,11 @@ const cors = require("cors");
 const connectDB = require("./config/db");
 const employeeRoutes = require("./routes/employeeRoutes");
 const skillRoutes = require("./routes/skillRoutes");
-const courseRoutes = require("./routes/courseRoutes"); 
-const assessmentRoutes = require("./routes/assessmentRoutes"); 
-const skillAssessmentRoutes = require("./routes/skillAssessmentRoutes"); 
-const employeeSkillAssessmentRoutes = require("./routes/EmployeeSkillAssessmentRoutes"); 
+const courseRoutes = require("./routes/courseRoutes");
+const assessmentRoutes = require("./routes/assessmentRoutes");
+const skillAssessmentRoutes = require("./routes/skillAssessmentRoutes");
+const employeeSkillAssessmentRoutes = require("./routes/EmployeeSkillAssessmentRoutes");
+const skillApprovalRoutes = require("./routes/skillApprovalRoutes"); // <-- Add this line for SkillApproval
 
 const app = express();
 
@@ -20,9 +21,10 @@ connectDB();
 app.use("/api/employees", employeeRoutes);
 app.use("/api/skills", skillRoutes);
 app.use("/api/courses", courseRoutes);
-app.use("/api/assessments", assessmentRoutes); 
+app.use("/api/assessments", assessmentRoutes);
 app.use("/api/skill-assessments", skillAssessmentRoutes);
-app.use("/api/employeeSkillAssessment", employeeSkillAssessmentRoutes); 
+app.use("/api/employeeSkillAssessment", employeeSkillAssessmentRoutes);
+app.use("/api/skill-approval", skillApprovalRoutes); // <-- Add this line for SkillApproval
 
 // Error handling middleware
 app.use((err, req, res, next) => {
