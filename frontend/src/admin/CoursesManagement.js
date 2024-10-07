@@ -6,6 +6,8 @@ import { Modal, Button } from "react-bootstrap";
 const CoursesManagement = () => {
   const [courses, setCourses] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false); // State for delete confirmation modal
+  const [confirmDelete, setConfirmDelete] = useState(null);
   const [formData, setFormData] = useState({
     id: "",
     name: "",
@@ -19,7 +21,7 @@ const CoursesManagement = () => {
     // Fetch courses from the API
     const fetchCourses = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/courses"); // Adjust the API endpoint as needed
+        const response = await fetch("http://localhost:5000/api/courses");
         const data = await response.json();
         setCourses(data);
       } catch (error) {
@@ -41,7 +43,7 @@ const CoursesManagement = () => {
       id: formData.id,
       name: formData.name,
       description: formData.description,
-      competencyLevel: formData.competencyLevel, // Include competency level
+      competencyLevel: formData.competencyLevel,
     };
 
     if (isEditing) {
@@ -103,19 +105,27 @@ const CoursesManagement = () => {
     setShowModal(true);
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = (id) => {
+    setConfirmDelete(id);
+    setShowDeleteModal(true); // Show the confirmation modal for deletion
+  };
+
+  const confirmDeleteCourse = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/courses/${id}`, {
+      const response = await fetch(`http://localhost:5000/api/courses/${confirmDelete}`, {
         method: "DELETE",
       });
 
       if (response.ok) {
-        setCourses(courses.filter((course) => course.id !== id));
+        setCourses(courses.filter((course) => course.id !== confirmDelete));
       } else {
         console.error("Error deleting course:", response.statusText);
       }
     } catch (error) {
       console.error("Error deleting course:", error);
+    } finally {
+      setConfirmDelete(null);
+      setShowDeleteModal(false);
     }
   };
 
@@ -123,19 +133,15 @@ const CoursesManagement = () => {
     setShowModal(false);
     setIsEditing(false);
     setFormData({ id: "", name: "", description: "", competencyLevel: "beginner" });
+    setConfirmDelete(null); // Reset confirmation state
   };
 
   return (
-    <div className="employee-dashboard vh-100 ">
-    <Navbar />
-    <div className="row m-0 w-100 min-vh-100 z-0" style={{
-      // minHeight:"calc(100vh-7rem)",
-      
-    }}>
-      <Sidebar />
-      <div className="dashboard-content container mt-4 col-9 col-lg-10 z-0" style={{
-          zIndex: 0
-        }}>
+    <div className="employee-dashboard vh-100">
+      <Navbar />
+      <div className="row m-0 w-100 min-vh-100 z-0">
+        <Sidebar />
+        <div className="dashboard-content container mt-4 col-9 col-lg-10 z-0">
           <h1 className="mb-4">Courses Management</h1>
           <button
             className="btn btn-primary mb-3"
@@ -153,7 +159,7 @@ const CoursesManagement = () => {
                 <th>Course ID</th>
                 <th>Course Name</th>
                 <th>Description</th>
-                <th>Competency Level</th> {/* Add Competency Level column */}
+                <th>Competency Level</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -163,7 +169,7 @@ const CoursesManagement = () => {
                   <td>{course.id}</td>
                   <td>{course.name}</td>
                   <td>{course.description}</td>
-                  <td>{course.competencyLevel}</td> {/* Display Competency Level */}
+                  <td>{course.competencyLevel}</td>
                   <td>
                     <button
                       className="btn btn-warning me-2"
@@ -173,7 +179,7 @@ const CoursesManagement = () => {
                     </button>
                     <button
                       className="btn btn-danger"
-                      onClick={() => handleDelete(course.id)}
+                      onClick={() => handleDelete(course.id)} // Call handleDelete
                     >
                       Delete
                     </button>
@@ -241,6 +247,24 @@ const CoursesManagement = () => {
                 </Button>
               </form>
             </Modal.Body>
+          </Modal>
+
+          {/* Confirmation Modal for Deleting Course */}
+          <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
+            <Modal.Header closeButton>
+              <Modal.Title>Confirm Deletion</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              Are you sure you want to delete this course?
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
+                Cancel
+              </Button>
+              <Button variant="danger" onClick={confirmDeleteCourse}>
+                Delete
+              </Button>
+            </Modal.Footer>
           </Modal>
         </div>
       </div>

@@ -6,26 +6,27 @@ import { Modal, Button } from "react-bootstrap";
 const SkillsManagement = () => {
   const [skills, setSkills] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false); // State for delete confirmation modal
   const [formData, setFormData] = useState({
     id: "",
     name: "",
     description: "",
   });
-  const [isEditing, setIsEditing] = useState(false); // New state to handle edit mode
-  const [currentSkillId, setCurrentSkillId] = useState(null); // To store the ID of the skill being edited
+  const [isEditing, setIsEditing] = useState(false);
+  const [currentSkillId, setCurrentSkillId] = useState(null);
+  const [confirmDelete, setConfirmDelete] = useState(null); // Store ID of skill to delete
 
   useEffect(() => {
-    // Fetch skills from the API
     const fetchSkills = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/skills"); 
+        const response = await fetch("http://localhost:5000/api/skills");
         const data = await response.json();
         setSkills(data);
       } catch (error) {
         console.error("Error fetching skills:", error);
       }
     };
-    
+
     fetchSkills();
   }, []);
 
@@ -43,7 +44,6 @@ const SkillsManagement = () => {
     };
 
     if (isEditing) {
-      // Update skill if we are editing
       try {
         const response = await fetch(`http://localhost:5000/api/skills/${currentSkillId}`, {
           method: "PUT",
@@ -70,7 +70,6 @@ const SkillsManagement = () => {
         console.error("Error updating skill:", error);
       }
     } else {
-      // Add new skill if we are not editing
       try {
         const response = await fetch("http://localhost:5000/api/skills", {
           method: "POST",
@@ -101,19 +100,27 @@ const SkillsManagement = () => {
     setShowModal(true);
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = (id) => {
+    setConfirmDelete(id); // Set the skill ID to confirm deletion
+    setShowDeleteModal(true); // Show the confirmation modal for deletion
+  };
+
+  const confirmDeleteSkill = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/skills/${id}`, {
+      const response = await fetch(`http://localhost:5000/api/skills/${confirmDelete}`, {
         method: "DELETE",
       });
 
       if (response.ok) {
-        setSkills(skills.filter((skill) => skill.id !== id));
+        setSkills(skills.filter((skill) => skill.id !== confirmDelete));
       } else {
         console.error("Error deleting skill:", response.statusText);
       }
     } catch (error) {
       console.error("Error deleting skill:", error);
+    } finally {
+      setConfirmDelete(null); // Reset confirmation
+      setShowDeleteModal(false); // Close delete modal
     }
   };
 
@@ -124,17 +131,19 @@ const SkillsManagement = () => {
   };
 
   return (
-    <div className="employee-dashboard vh-100 ">
+    <div className="employee-dashboard vh-100">
       <Navbar />
       <div className="row m-0 w-100 min-vh-100 z-0">
-          <Sidebar />
-          <div className="dashboard-content container mt-4 col-9 col-lg-10 z-0" style={{
-          zIndex: 0
-        }}>
+        <Sidebar />
+        <div className="dashboard-content container mt-4 col-9 col-lg-10 z-0">
           <h1 className="mb-4">Skills Management</h1>
           <button
             className="btn btn-primary mb-3"
-            onClick={() => setShowModal(true)}
+            onClick={() => {
+              setShowModal(true);
+              setIsEditing(false);
+              setFormData({ id: "", name: "", description: "" }); // Reset form for adding new skill
+            }}
           >
             Add Skill
           </button>
@@ -162,7 +171,7 @@ const SkillsManagement = () => {
                     </button>
                     <button
                       className="btn btn-danger"
-                      onClick={() => handleDelete(skill.id)}
+                      onClick={() => handleDelete(skill.id)} // Call handleDelete
                     >
                       Delete
                     </button>
@@ -188,7 +197,6 @@ const SkillsManagement = () => {
                     value={formData.id}
                     onChange={handleChange}
                     required
-                    disabled={isEditing} // Disable ID field when editing
                   />
                 </div>
                 <div className="mb-3">
@@ -212,11 +220,29 @@ const SkillsManagement = () => {
                     required
                   />
                 </div>
-                <Button type="submit" variant="primary">
+                <Button variant="primary" type="submit">
                   {isEditing ? "Update Skill" : "Add Skill"}
                 </Button>
               </form>
             </Modal.Body>
+          </Modal>
+
+          {/* Confirmation Modal for Deleting Skill */}
+          <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
+            <Modal.Header closeButton>
+              <Modal.Title>Confirm Deletion</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              Are you sure you want to delete this skill?
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
+                Cancel
+              </Button>
+              <Button variant="danger" onClick={confirmDeleteSkill}>
+                Delete
+              </Button>
+            </Modal.Footer>
           </Modal>
         </div>
       </div>

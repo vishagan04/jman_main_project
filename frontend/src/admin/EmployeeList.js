@@ -7,10 +7,12 @@ import AddEditEmployee from "./AddEditEmployee"; // Import the AddEditEmployee c
 const EmployeeList = () => {
   const [employees, setEmployees] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false); // State for delete confirmation modal
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
+  const [employeeToDelete, setEmployeeToDelete] = useState(null); // State for the employee to delete
 
   useEffect(() => {
     const fetchEmployees = async () => {
@@ -59,19 +61,27 @@ const EmployeeList = () => {
     handleCloseModal(); // Close the modal after adding or editing
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = (id) => {
+    setEmployeeToDelete(id); // Set the employee ID to delete
+    setShowDeleteModal(true); // Show the delete confirmation modal
+  };
+
+  const confirmDeleteEmployee = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/employees/${id}`, {
+      const response = await fetch(`http://localhost:5000/api/employees/${employeeToDelete}`, {
         method: "DELETE",
       });
 
       if (response.ok) {
-        setEmployees(employees.filter((employee) => employee._id !== id));
+        setEmployees(employees.filter((employee) => employee._id !== employeeToDelete));
       } else {
         console.error("Error deleting employee:", response.statusText);
       }
     } catch (error) {
       console.error("Error deleting employee:", error);
+    } finally {
+      setShowDeleteModal(false); // Close the delete confirmation modal
+      setEmployeeToDelete(null); // Clear the employee ID
     }
   };
 
@@ -80,9 +90,7 @@ const EmployeeList = () => {
       <Navbar />
       <div className="row m-0 w-100 min-vh-100 z-0">
         <Sidebar />
-        <div className="dashboard-content container mt-4 col-9 col-lg-10 z-0" style={{
-          zIndex: 0
-        }}>
+        <div className="dashboard-content container mt-4 col-9 col-lg-10 z-0" style={{ zIndex: 0 }}>
           <h1 className="mb-4">Employee List</h1>
           <button className="btn btn-primary mb-3" onClick={handleAddEmployee}>
             Add Employee
@@ -93,7 +101,7 @@ const EmployeeList = () => {
             <table className="table table-striped">
               <thead>
                 <tr>
-                  <th>Email</th> {/* Change from ID to Email */}
+                  <th>Email</th>
                   <th>Name</th>
                   <th>Role</th>
                   <th>Department</th>
@@ -103,7 +111,7 @@ const EmployeeList = () => {
               <tbody>
                 {employees.map((employee) => (
                   <tr key={employee._id}>
-                    <td>{employee.email}</td> {/* Display email instead of ID */}
+                    <td>{employee.email}</td>
                     <td>{employee.name}</td>
                     <td>{employee.role}</td>
                     <td>{employee.department}</td>
@@ -126,6 +134,8 @@ const EmployeeList = () => {
               </tbody>
             </table>
           )}
+
+          {/* Modal for Adding/Editing Employee */}
           <Modal show={showModal} onHide={handleCloseModal}>
             <Modal.Header closeButton>
               <Modal.Title>{isEditing ? "Edit Employee" : "Add Employee"}</Modal.Title>
@@ -137,6 +147,24 @@ const EmployeeList = () => {
                 onClose={handleCloseModal}
               />
             </Modal.Body>
+          </Modal>
+
+          {/* Modal for Confirming Deletion */}
+          <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
+            <Modal.Header closeButton>
+              <Modal.Title>Confirm Deletion</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              Are you sure you want to delete this employee?
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
+                Cancel
+              </Button>
+              <Button variant="danger" onClick={confirmDeleteEmployee}>
+                Delete
+              </Button>
+            </Modal.Footer>
           </Modal>
         </div>
       </div>

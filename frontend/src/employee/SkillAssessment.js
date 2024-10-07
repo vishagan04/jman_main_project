@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import EmployeeNavbar from "./components/EmployeeNavbar";
 import EmployeeSidebar from "./components/EmployeeSidebar";
-import { Button, Modal, Table } from "react-bootstrap";
+import { Button, Modal, Table, Tooltip, OverlayTrigger } from "react-bootstrap";
 import SkillAssessmentForm from "./components/SkillAssessmentForm";
 
 const SkillAssessment = () => {
@@ -124,7 +124,7 @@ const SkillAssessment = () => {
                 <th>Course</th>
                 <th>Skill</th>
                 <th>Score</th>
-                <th>Approval Status</th> {/* New column for approval status */}
+                <th>Approval Status</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -134,16 +134,31 @@ const SkillAssessment = () => {
                   <td>{getCertificationName(assessment.certification)}</td>
                   <td>{getSkillName(assessment.skills)}</td>
                   <td>{assessment.marks}</td>
-                  <td>{assessment.approvalStatus || "Pending"}</td>{" "}
-                  {/* Display "Pending" if approvalStatus is not defined */}
+                  <td>{assessment.approvalStatus || "Pending"}</td>
                   <td>
-                    <Button
-                      variant="danger"
-                      onClick={() => handleDeleteAssessment(assessment._id)}
-                      className="ml-2"
+                    <OverlayTrigger
+                      placement="top"
+                      overlay={
+                        <Tooltip>
+                          {assessment.approvalStatus === "Approved"
+                            ? "Cannot delete approved assessments"
+                            : ""}
+                        </Tooltip>
+                      }
                     >
-                      Delete
-                    </Button>
+                      <span>
+                        <Button
+                          variant="danger"
+                          onClick={() =>
+                            handleDeleteAssessment(assessment._id)
+                          }
+                          className="ml-2"
+                          disabled={assessment.approvalStatus === "Approved"} // Disable if approved
+                        >
+                          Delete
+                        </Button>
+                      </span>
+                    </OverlayTrigger>
                   </td>
                 </tr>
               ))}
