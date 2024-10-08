@@ -10,7 +10,7 @@ const Sidebar = () => {
     e.preventDefault();
     Cookies.remove("role");
     localStorage.clear();
-    navigate("/login");
+    navigate("/");
   };
 
   return (

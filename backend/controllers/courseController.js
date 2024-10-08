@@ -12,8 +12,8 @@ exports.getCourses = async (req, res) => {
 
 // Add a new course
 exports.addCourse = async (req, res) => {
-  const { id, name, description, competencyLevel } = req.body; // Include competencyLevel
-  const course = new Course({ id, name, description, competencyLevel }); // Add competencyLevel
+  const { id, name, description, competencyLevel, department, rating } = req.body; // Include department and rating
+  const course = new Course({ id, name, description, competencyLevel, department, rating }); // Add department and rating
 
   try {
     const savedCourse = await course.save();
@@ -26,12 +26,12 @@ exports.addCourse = async (req, res) => {
 // Update course
 exports.updateCourse = async (req, res) => {
   const { id } = req.params;
-  const { name, description, competencyLevel } = req.body; // Include competencyLevel
+  const { name, description, competencyLevel, department, rating } = req.body; // Include department and rating
   
   try {
     const updatedCourse = await Course.findOneAndUpdate(
       { id }, 
-      { name, description, competencyLevel }, // Add competencyLevel
+      { name, description, competencyLevel, department, rating }, // Add department and rating
       { new: true } 
     );
 

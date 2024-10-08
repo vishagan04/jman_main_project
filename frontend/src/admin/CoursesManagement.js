@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../UI-components/Navbar";
 import Sidebar from "../UI-components/Sidebar";
 import { Modal, Button } from "react-bootstrap";
-import { ToastContainer, toast } from 'react-toastify'; // Import Toastify
-import 'react-toastify/dist/ReactToastify.css';  // Import Toastify CSS
+import { ToastContainer, toast } from 'react-toastify'; 
+import 'react-toastify/dist/ReactToastify.css';  
 
 const CoursesManagement = () => {
   const [courses, setCourses] = useState([]);
@@ -14,7 +14,9 @@ const CoursesManagement = () => {
     id: "",
     name: "",
     description: "",
-    competencyLevel: "beginner", // Default value
+    competencyLevel: "beginner", 
+    department: "", // New field
+    rating: "", // New field
   });
   const [isEditing, setIsEditing] = useState(false);
   const [currentCourseId, setCurrentCourseId] = useState(null);
@@ -27,7 +29,7 @@ const CoursesManagement = () => {
         setCourses(data);
       } catch (error) {
         console.error("Error fetching courses:", error);
-        toast.error("Error fetching courses!"); // Toast for fetch error
+        toast.error("Error fetching courses!"); 
       }
     };
 
@@ -46,10 +48,11 @@ const CoursesManagement = () => {
       name: formData.name,
       description: formData.description,
       competencyLevel: formData.competencyLevel,
+      department: formData.department, // Include department
+      rating: formData.rating, // Include rating
     };
 
     if (isEditing) {
-      // Update course if we are editing
       try {
         const response = await fetch(`http://localhost:5000/api/courses/${currentCourseId}`, {
           method: "PUT",
@@ -66,20 +69,19 @@ const CoursesManagement = () => {
               course.id === currentCourseId ? updatedCourse : course
             )
           );
-          toast.success("Course updated successfully!"); // Toast for successful update
+          toast.success("Course updated successfully!");
           setIsEditing(false);
-          setFormData({ id: "", name: "", description: "", competencyLevel: "beginner" });
+          setFormData({ id: "", name: "", description: "", competencyLevel: "beginner", department: "", rating: "" });
           setShowModal(false);
         } else {
           console.error("Error updating course:", response.statusText);
-          toast.error("Failed to update course!"); // Toast for update failure
+          toast.error("Failed to update course!");
         }
       } catch (error) {
         console.error("Error updating course:", error);
-        toast.error("Error updating course!"); // Toast for error
+        toast.error("Error updating course!");
       }
     } else {
-      // Add new course if we are not editing
       try {
         const response = await fetch("http://localhost:5000/api/courses", {
           method: "POST",
@@ -92,22 +94,29 @@ const CoursesManagement = () => {
         if (response.ok) {
           const addedCourse = await response.json();
           setCourses([...courses, addedCourse]);
-          toast.success("Course added successfully!"); // Toast for successful add
-          setFormData({ id: "", name: "", description: "", competencyLevel: "beginner" });
+          toast.success("Course added successfully!");
+          setFormData({ id: "", name: "", description: "", competencyLevel: "beginner", department: "", rating: "" });
           setShowModal(false);
         } else {
           console.error("Error adding course:", response.statusText);
-          toast.error("Failed to add course!"); // Toast for add failure
+          toast.error("Failed to add course!");
         }
       } catch (error) {
         console.error("Error adding course:", error);
-        toast.error("Error adding course!"); // Toast for error
+        toast.error("Error adding course!");
       }
     }
   };
 
   const handleEdit = (course) => {
-    setFormData({ id: course.id, name: course.name, description: course.description, competencyLevel: course.competencyLevel });
+    setFormData({ 
+      id: course.id, 
+      name: course.name, 
+      description: course.description, 
+      competencyLevel: course.competencyLevel,
+      department: course.department, // Include department
+      rating: course.rating // Include rating
+    });
     setCurrentCourseId(course.id);
     setIsEditing(true);
     setShowModal(true);
@@ -115,7 +124,7 @@ const CoursesManagement = () => {
 
   const handleDelete = (id) => {
     setConfirmDelete(id);
-    setShowDeleteModal(true); // Show the confirmation modal for deletion
+    setShowDeleteModal(true);
   };
 
   const confirmDeleteCourse = async () => {
@@ -126,25 +135,25 @@ const CoursesManagement = () => {
 
       if (response.ok) {
         setCourses(courses.filter((course) => course.id !== confirmDelete));
-        toast.success("Course deleted successfully!"); // Toast for successful deletion
+        toast.success("Course deleted successfully!");
       } else {
         console.error("Error deleting course:", response.statusText);
-        toast.error("Failed to delete course!"); // Toast for delete failure
+        toast.error("Failed to delete course!");
       }
     } catch (error) {
       console.error("Error deleting course:", error);
-      toast.error("Error deleting course!"); // Toast for error
+      toast.error("Error deleting course!");
     } finally {
       setConfirmDelete(null);
-      setShowDeleteModal(false); // Close delete modal
+      setShowDeleteModal(false);
     }
   };
 
   const handleCloseModal = () => {
     setShowModal(false);
     setIsEditing(false);
-    setFormData({ id: "", name: "", description: "", competencyLevel: "beginner" });
-    setConfirmDelete(null); // Reset confirmation state
+    setFormData({ id: "", name: "", description: "", competencyLevel: "beginner", department: "", rating: "" });
+    setConfirmDelete(null);
   };
 
   return (
@@ -153,14 +162,14 @@ const CoursesManagement = () => {
       <div className="row m-0 w-100 min-vh-100 z-0">
         <Sidebar />
         <div className="dashboard-content container mt-4 col-9 col-lg-10 z-0">
-          <ToastContainer /> {/* Toastify Container */}
+          <ToastContainer />
           <h1 className="mb-4">Courses Management</h1>
           <button
             className="btn btn-primary mb-3"
             onClick={() => {
               setShowModal(true);
               setIsEditing(false);
-              setFormData({ id: "", name: "", description: "", competencyLevel: "beginner" }); // Reset form for adding new course
+              setFormData({ id: "", name: "", description: "", competencyLevel: "beginner", department: "", rating: "" });
             }}
           >
             Add Course
@@ -172,6 +181,8 @@ const CoursesManagement = () => {
                 <th>Course Name</th>
                 <th>Description</th>
                 <th>Competency Level</th>
+                <th>Department</th> {/* New column */}
+                <th>Rating</th> {/* New column */}
                 <th>Actions</th>
               </tr>
             </thead>
@@ -182,6 +193,8 @@ const CoursesManagement = () => {
                   <td>{course.name}</td>
                   <td>{course.description}</td>
                   <td>{course.competencyLevel}</td>
+                  <td>{course.department}</td> {/* Display department */}
+                  <td>{course.rating}</td> {/* Display rating */}
                   <td>
                     <button
                       className="btn btn-warning me-2"
@@ -191,7 +204,7 @@ const CoursesManagement = () => {
                     </button>
                     <button
                       className="btn btn-danger"
-                      onClick={() => handleDelete(course.id)} // Call handleDelete
+                      onClick={() => handleDelete(course.id)}
                     >
                       Delete
                     </button>
@@ -254,21 +267,43 @@ const CoursesManagement = () => {
                     <option value="advanced">Advanced</option>
                   </select>
                 </div>
-                <Button variant="primary" type="submit">
+                <div className="mb-3">
+                  <label className="form-label">Department</label> {/* New field */}
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="department"
+                    value={formData.department}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">Rating</label> {/* New field */}
+                  <input
+                    type="number"
+                    className="form-control"
+                    name="rating"
+                    value={formData.rating}
+                    onChange={handleChange}
+                    min="1"
+                    max="5"
+                    required
+                  />
+                </div>
+                <Button type="submit" variant="primary">
                   {isEditing ? "Update Course" : "Add Course"}
                 </Button>
               </form>
             </Modal.Body>
           </Modal>
 
-          {/* Confirmation Modal for Deleting Course */}
+          {/* Modal for Deleting Course */}
           <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
             <Modal.Header closeButton>
               <Modal.Title>Confirm Deletion</Modal.Title>
             </Modal.Header>
-            <Modal.Body>
-              Are you sure you want to delete this course?
-            </Modal.Body>
+            <Modal.Body>Are you sure you want to delete this course?</Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
                 Cancel

@@ -27,7 +27,7 @@ const App = () => {
         <Route path="/admin/skills" element={<SkillsManagement />} />
         <Route path="/admin/courses" element={<CoursesManagement />} />
         <Route path="/admin/skill-approval" element={<SkillApproval />} /> {/* New Skill Approval route */}
-        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Login />} />
 
         {/* Employee Routes */}
         <Route path="/employee/dashboard" element={<EmployeeDashboard />} />

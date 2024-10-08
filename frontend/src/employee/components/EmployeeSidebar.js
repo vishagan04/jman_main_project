@@ -10,7 +10,7 @@ const EmployeeSidebar = () => {
     e.preventDefault();
     Cookies.remove("role");
     localStorage.clear();
-    navigate("/login");
+    navigate("/");
   };
 
   return (
