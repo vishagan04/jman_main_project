@@ -1,0 +1,201 @@
+course_id,course_name,description,competencyLevel,department,rating
+1,Product Management Essentials,Against American while.,advanced,Technical Support,3
+2,Quality Assurance Testing,Contain nature clear.,advanced,Quality Assurance,3
+3,Quality Assurance Testing,Others close produce miss medical site wear.,advanced,Technical Support,2
+4,Cloud DevOps,Mr move wide PM himself.,advanced,Software Development,4
+5,Data Pipelines with Apache Airflow,Thing join memory.,advanced,Data Science,5
+6,Deep Learning for AI,Their their challenge protect size we.,intermediate,Data Engineering,3
+7,Introduction to Python,Simple author guy education quality.,intermediate,Artificial Intelligence,3
+8,Technical Support Troubleshooting,Be born offer.,intermediate,Cybersecurity,2
+9,Cybersecurity Fundamentals,Defense after prove employee.,advanced,Data Science,5
+10,Advanced Machine Learning,Tough international rock other huge action.,beginner,Product Management,2
+11,Cloud DevOps,Less trouble adult billion hair respond.,intermediate,DevOps,3
+12,DevOps Automation,More view chair officer perhaps huge board just.,advanced,DevOps,3
+13,Advanced Machine Learning,Crime management item Democrat degree up.,beginner,Data Science,2
+14,Cloud DevOps,Soon instead hour old outside.,intermediate,Machine Learning,4
+15,Data Science with R,Financial hour have production organization week man.,intermediate,Quality Assurance,4
+16,Data Pipelines with Apache Airflow,Who listen Republican pattern.,beginner,Quality Assurance,1
+17,Advanced Machine Learning,Clearly amount clear administration.,advanced,Data Science,1
+18,Introduction to Python,Address score know long.,advanced,Machine Learning,3
+19,Data Science with R,Such building heart explain.,intermediate,Software Development,3
+20,Deep Learning for AI,Believe sure do century visit indicate.,intermediate,DevOps,1
+21,Software Development Best Practices,Under across short child here yard business.,beginner,Machine Learning,3
+22,Data Pipelines with Apache Airflow,Third positive write more matter administration sort.,beginner,Artificial Intelligence,4
+23,Advanced Machine Learning,Mouth thought again art.,intermediate,Data Science,3
+24,AI Ethics and Governance,Tend movie accept significant their want special.,beginner,Software Development,2
+25,Cybersecurity Fundamentals,Technology few five pull organization subject.,advanced,Data Engineering,4
+26,Product Management Essentials,Necessary own short happen well.,intermediate,DevOps,4
+27,Technical Support Troubleshooting,There him available especially.,advanced,Machine Learning,2
+28,Cloud DevOps,Near movie stop suffer herself.,intermediate,Software Development,1
+29,Deep Learning for AI,Stand memory blood analysis decision response project.,intermediate,Quality Assurance,1
+30,Natural Language Processing,How move large event walk art.,advanced,Technical Support,3
+31,Software Development Best Practices,Simple institution moment look.,beginner,Software Development,2
+32,Data Science with R,Smile despite picture herself society.,advanced,Data Engineering,2
+33,Introduction to Python,Defense similar report price draw board break hot.,intermediate,Software Development,4
+34,Natural Language Processing,Suggest case look thing artist continue list.,advanced,Data Engineering,4
+35,Deep Learning for AI,Data price director necessary kid.,intermediate,Data Science,2
+36,Cloud DevOps,Family military message city.,intermediate,Data Science,2
+37,DevOps Automation,Tonight Republican this perhaps move detail.,beginner,Technical Support,3
+38,Data Science with R,Long suggest benefit green.,beginner,Software Development,1
+39,Introduction to Python,Husband test show yeah subject own thank.,beginner,DevOps,4
+40,Deep Learning for AI,Skill explain major movie increase visit teach.,advanced,Data Engineering,2
+41,DevOps Automation,Employee appear red politics interest film.,intermediate,Data Engineering,5
+42,AI Ethics and Governance,Garden lose office company relate.,beginner,Technical Support,3
+43,Software Development Best Practices,Site relate son real subject.,advanced,Data Science,2
+44,Software Development Best Practices,Do fill your stage quite likely.,advanced,Software Development,5
+45,Software Development Best Practices,Attack exist easy reality person mean.,intermediate,Technical Support,2
+46,Cloud DevOps,None score seek off mouth reality return.,advanced,Software Development,2
+47,Quality Assurance Testing,Professional perhaps great guess glass first behind.,beginner,Product Management,5
+48,Cloud DevOps,Each friend dream focus quite sea least out.,advanced,Machine Learning,2
+49,Big Data Engineering,Throughout travel discover suddenly anything front.,beginner,Technical Support,4
+50,Cloud DevOps,Test line south structure discussion.,advanced,Data Science,4
+51,Cybersecurity Fundamentals,Thank source may deep loss official.,beginner,Technical Support,4
+52,Data Pipelines with Apache Airflow,Why ten risk note herself fly.,intermediate,Machine Learning,2
+53,Cybersecurity Fundamentals,Trade discover amount experience actually attention boy official.,intermediate,Data Engineering,1
+54,Product Management Essentials,Over sing account full religious paper blood.,beginner,Quality Assurance,3
+55,Product Management Essentials,Site well change how hundred high.,beginner,Product Management,4
+56,Data Pipelines with Apache Airflow,Mr government financial parent.,intermediate,Data Engineering,5
+57,Cybersecurity Fundamentals,Case street exist.,advanced,Quality Assurance,3
+58,Advanced Machine Learning,Road seat early clear anyone.,advanced,Artificial Intelligence,3
+59,Cybersecurity Fundamentals,Memory catch story already hold.,beginner,Machine Learning,1
+60,Software Development Best Practices,Feel church my attorney.,advanced,Quality Assurance,5
+61,Technical Support Troubleshooting,Wonder age of treatment or relate and let.,beginner,Software Development,1
+62,DevOps Automation,Practice phone bag fund material from hotel.,intermediate,Product Management,1
+63,Data Pipelines with Apache Airflow,Pretty child want far wrong mean.,advanced,Quality Assurance,3
+64,Software Development Best Practices,Six before even owner benefit than.,intermediate,Data Science,2
+65,Natural Language Processing,Sense myself list fine.,advanced,Cybersecurity,5
+66,Software Development Best Practices,Analysis by shake three.,advanced,Software Development,4
+67,Big Data Engineering,Customer power bank him owner or reality.,advanced,Data Science,3
+68,DevOps Automation,Material writer also thing station.,beginner,Data Engineering,3
+69,Deep Learning for AI,Country statement reveal skill look management.,intermediate,Artificial Intelligence,2
+70,Natural Language Processing,Board section through paper.,advanced,Data Science,4
+71,Advanced Machine Learning,Behind soon sense or site social.,advanced,Data Science,3
+72,Data Science with R,Future contain ability shake entire behavior choice.,advanced,Data Science,1
+73,Product Management Essentials,Across sea hotel Congress.,intermediate,Data Science,4
+74,Natural Language Processing,Music claim no tend marriage.,advanced,Cybersecurity,1
+75,Cloud DevOps,Always north peace of woman.,intermediate,Artificial Intelligence,5
+76,Introduction to Python,Appear player body thing state.,beginner,Product Management,3
+77,Data Pipelines with Apache Airflow,Score lay sort society position several.,advanced,DevOps,1
+78,Software Development Best Practices,People could reveal trial him style.,advanced,Technical Support,2
+79,Introduction to Python,Gas very reduce exist human.,advanced,Artificial Intelligence,4
+80,Product Management Essentials,Near travel operation again accept.,advanced,Quality Assurance,3
+81,Natural Language Processing,Member speak speech above avoid four.,intermediate,Artificial Intelligence,5
+82,Natural Language Processing,From person value huge themselves.,beginner,Product Management,2
+83,Cybersecurity Fundamentals,Station media nation response.,advanced,Quality Assurance,5
+84,Big Data Engineering,Million social voice street born.,beginner,Quality Assurance,2
+85,Big Data Engineering,Place scientist pass.,beginner,Machine Learning,2
+86,Technical Support Troubleshooting,Over condition other page air so their.,intermediate,Artificial Intelligence,4
+87,DevOps Automation,Charge easy half smile less.,advanced,Machine Learning,5
+88,Technical Support Troubleshooting,For deep more line tough pick write.,beginner,Data Engineering,4
+89,Deep Learning for AI,Tonight crime during today program face scientist challenge.,intermediate,Cybersecurity,3
+90,Software Development Best Practices,Place teacher edge follow room others.,intermediate,Technical Support,1
+91,Product Management Essentials,Role lot sort however thought exist every.,advanced,DevOps,5
+92,Product Management Essentials,Loss series southern.,advanced,Quality Assurance,3
+93,Data Science with R,Cut reason how career save shake you fight.,intermediate,Data Engineering,4
+94,DevOps Automation,Them nothing table coach more arrive.,beginner,Software Development,1
+95,Data Science with R,Drug girl see wonder capital.,intermediate,Product Management,5
+96,Big Data Engineering,Their sing compare despite.,intermediate,Data Science,4
+97,AI Ethics and Governance,Accept north allow.,beginner,Technical Support,5
+98,Cloud DevOps,Base like officer nothing rate enter later play.,intermediate,DevOps,4
+99,DevOps Automation,One place eye prove century.,advanced,Quality Assurance,4
+100,Cybersecurity Fundamentals,Every hundred organization tend there strong nearly bad.,intermediate,Product Management,4
+101,Technical Support Troubleshooting,Car teach full parent section interest crime.,intermediate,Data Science,3
+102,Data Pipelines with Apache Airflow,Military religious top form compare task.,advanced,Machine Learning,1
+103,Big Data Engineering,Movement letter yet.,intermediate,DevOps,2
+104,Advanced Machine Learning,Blue build protect.,intermediate,Machine Learning,5
+105,Deep Learning for AI,Successful back interview fine.,intermediate,DevOps,5
+106,Data Pipelines with Apache Airflow,Huge certainly inside term establish process society.,advanced,Data Engineering,4
+107,Data Pipelines with Apache Airflow,Card space travel forward.,beginner,Data Science,3
+108,DevOps Automation,Smile first really thank century treatment rest ground.,beginner,Technical Support,5
+109,Software Development Best Practices,Attorney store half good arrive me school.,intermediate,Product Management,1
+110,Natural Language Processing,Decade artist air different story.,intermediate,Data Engineering,2
+111,AI Ethics and Governance,Meeting discover fight successful.,advanced,Cybersecurity,3
+112,Data Pipelines with Apache Airflow,Employee mention doctor others share knowledge fund.,intermediate,Machine Learning,1
+113,Advanced Machine Learning,Door company cover us fish.,intermediate,Software Development,5
+114,DevOps Automation,Mean sense thing off.,beginner,Technical Support,5
+115,AI Ethics and Governance,Why around eye amount risk Congress feel.,advanced,Data Engineering,2
+116,Introduction to Python,Site challenge some article against week movement.,intermediate,Machine Learning,2
+117,Product Management Essentials,Not technology opportunity ok establish project fall.,intermediate,DevOps,3
+118,Quality Assurance Testing,Poor everything indicate thousand price arm brother.,intermediate,Artificial Intelligence,2
+119,Quality Assurance Testing,Thousand including term news national possible chance.,advanced,Artificial Intelligence,2
+120,Product Management Essentials,Will often high civil.,beginner,Machine Learning,2
+121,AI Ethics and Governance,Fall there have bank.,intermediate,Machine Learning,1
+122,Software Development Best Practices,Loss be society.,beginner,Data Engineering,4
+123,Cloud DevOps,Measure threat together nice own skill.,beginner,Cybersecurity,1
+124,Cybersecurity Fundamentals,Every never hot word hard investment eat suggest.,advanced,Software Development,4
+125,Natural Language Processing,Language deal within.,intermediate,Technical Support,1
+126,Cloud DevOps,Chance enough require seven Republican occur.,advanced,Software Development,5
+127,Deep Learning for AI,Organization similar on true himself.,beginner,Data Engineering,3
+128,Introduction to Python,Difference ever ready rate.,beginner,Technical Support,1
+129,Data Science with R,Leader from six.,intermediate,Cybersecurity,5
+130,Cloud DevOps,Before purpose national key sort.,intermediate,Technical Support,3
+131,Deep Learning for AI,Something stock either space.,advanced,Machine Learning,5
+132,Advanced Machine Learning,Dark strategy see foreign player interesting.,beginner,Data Science,1
+133,Advanced Machine Learning,And power question after operation time.,intermediate,Product Management,5
+134,Cloud DevOps,National even charge rate.,advanced,Data Science,3
+135,Cloud DevOps,Least suffer believe newspaper life fear together.,beginner,Machine Learning,5
+136,Data Pipelines with Apache Airflow,Often product or area among.,beginner,Product Management,1
+137,Cybersecurity Fundamentals,Subject phone ground share course.,intermediate,Product Management,4
+138,AI Ethics and Governance,Land garden indeed rule only value.,advanced,Data Science,2
+139,Data Pipelines with Apache Airflow,City measure it claim standard thought.,advanced,Data Science,4
+140,Big Data Engineering,Bar course glass drive.,advanced,Artificial Intelligence,3
+141,Product Management Essentials,Especially staff which half oil yard.,intermediate,Product Management,2
+142,Product Management Essentials,Only source herself order bit.,beginner,Artificial Intelligence,1
+143,Cloud DevOps,Loss be care price operation usually.,advanced,Machine Learning,5
+144,Cloud DevOps,Thousand room one bag.,beginner,Machine Learning,2
+145,Natural Language Processing,See reason admit bed parent.,beginner,Technical Support,4
+146,Product Management Essentials,Side key like specific than smile close.,advanced,Machine Learning,5
+147,DevOps Automation,Either especially offer my.,advanced,Data Engineering,5
+148,Cloud DevOps,Poor culture doctor spend.,intermediate,Software Development,2
+149,Introduction to Python,Game area right any.,intermediate,Cybersecurity,4
+150,Data Pipelines with Apache Airflow,Common interesting environmental level expert positive character.,intermediate,Product Management,3
+151,Natural Language Processing,Everyone away successful black whether station style can.,beginner,Technical Support,4
+152,Natural Language Processing,Meeting despite page accept.,advanced,Machine Learning,1
+153,Deep Learning for AI,Administration foreign herself fall blood ago wish effect.,beginner,Product Management,5
+154,Advanced Machine Learning,Pattern city appear close certainly amount finally.,advanced,Software Development,2
+155,Natural Language Processing,Offer center senior.,advanced,Software Development,4
+156,Data Pipelines with Apache Airflow,Lead magazine break concern evidence answer power.,beginner,Software Development,5
+157,Quality Assurance Testing,Key large that news foreign system machine half.,intermediate,Quality Assurance,2
+158,Natural Language Processing,Others site organization author west past.,beginner,Data Science,4
+159,Quality Assurance Testing,Likely stop grow focus service.,beginner,DevOps,4
+160,Software Development Best Practices,Information beyond realize your investment.,intermediate,Data Science,4
+161,Cloud DevOps,Look trade industry should argue.,beginner,Artificial Intelligence,4
+162,Deep Learning for AI,Total more agent.,beginner,Machine Learning,4
+163,Data Pipelines with Apache Airflow,Daughter must traditional answer.,intermediate,Data Science,5
+164,AI Ethics and Governance,East sister player see.,advanced,Machine Learning,3
+165,Product Management Essentials,Maybe do voice somebody scene human material offer.,advanced,Data Engineering,4
+166,Big Data Engineering,Employee military executive down then democratic condition stop.,beginner,Product Management,4
+167,Cybersecurity Fundamentals,Debate watch hear despite century or administration.,beginner,Software Development,3
+168,AI Ethics and Governance,Prevent for anyone trade piece bring Democrat.,beginner,Product Management,2
+169,Technical Support Troubleshooting,Wall woman western opportunity partner instead that.,advanced,Machine Learning,4
+170,Cloud DevOps,Add growth special pay fund.,beginner,Machine Learning,2
+171,Deep Learning for AI,Spend present large unit study environment.,beginner,Quality Assurance,3
+172,Cloud DevOps,Good computer real their such news.,beginner,DevOps,2
+173,Deep Learning for AI,Participant around teach wrong but.,advanced,Software Development,5
+174,Natural Language Processing,Record hot though foreign teach.,intermediate,Data Engineering,5
+175,Data Pipelines with Apache Airflow,Indeed various choose almost white one western.,beginner,Cybersecurity,3
+176,Cybersecurity Fundamentals,Sell health direction score.,intermediate,Machine Learning,3
+177,Natural Language Processing,Their southern better head apply.,advanced,Artificial Intelligence,3
+178,Product Management Essentials,Seek away happy growth edge.,beginner,DevOps,3
+179,Cloud DevOps,Doctor goal there go be two market.,beginner,Cybersecurity,3
+180,Data Pipelines with Apache Airflow,Game off production.,advanced,Data Science,3
+181,Quality Assurance Testing,More government go since break administration.,advanced,Machine Learning,4
+182,Deep Learning for AI,Card agree site modern young.,advanced,Machine Learning,1
+183,Big Data Engineering,Sport service because message.,advanced,Product Management,1
+184,Software Development Best Practices,Prove easy around happen option indicate.,intermediate,Technical Support,5
+185,Big Data Engineering,Reduce reveal floor sound sort feeling body fine.,advanced,Quality Assurance,5
+186,Cybersecurity Fundamentals,Say write guy.,beginner,Data Science,4
+187,AI Ethics and Governance,Treatment reality management TV.,beginner,DevOps,5
+188,Technical Support Troubleshooting,Role popular child page allow teacher.,beginner,DevOps,2
+189,Software Development Best Practices,Total participant mean live.,beginner,Data Engineering,1
+190,DevOps Automation,Scientist system old develop early rise inside.,intermediate,Software Development,2
+191,Cloud DevOps,Throughout dream front impact bar close.,intermediate,Data Science,4
+192,Technical Support Troubleshooting,General again always partner ball role compare voice.,intermediate,Product Management,5
+193,Quality Assurance Testing,Expect nation nor key manager.,advanced,Cybersecurity,2
+194,AI Ethics and Governance,Alone one state control.,advanced,Data Science,3
+195,Introduction to Python,Enough hope just.,advanced,Software Development,2
+196,Cybersecurity Fundamentals,Bill single attorney sort series Congress.,beginner,Data Engineering,1
+197,Natural Language Processing,Man though room film animal.,intermediate,Product Management,2
+198,Natural Language Processing,Give type economy no suddenly action.,beginner,Cybersecurity,1
+199,DevOps Automation,Thank purpose very well major value.,intermediate,Product Management,4
+200,Data Pipelines with Apache Airflow,State mission little side yes various investment throughout.,beginner,Data Science,2
